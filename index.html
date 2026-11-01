@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>量子力学与弦论 · 五人辩论课件</title>
+<style>
+:root{
+  --bg:#05060f; --panel:rgba(20,24,48,.72); --line:rgba(140,160,255,.18);
+  --text:#e8ecff; --muted:#9aa3c7; --accent:#7cc4ff; --accent2:#c58bff; --gold:#ffd27a;
+  --ok:#5fe0a8; --mid:#ffc861; --no:#ff7a8a;
+  --font:"PingFang SC","Hiragino Sans GB","Noto Sans CJK SC","Source Han Sans SC","Microsoft YaHei","WenQuanYi Micro Hei",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--bg);color:var(--text);font-family:var(--font);line-height:1.75;font-size:17px;overflow:hidden}
+#stars{position:fixed;inset:0;z-index:0;pointer-events:none}
+.nebula{position:fixed;inset:-20%;z-index:0;pointer-events:none;
+  background:radial-gradient(40% 35% at 15% 20%,rgba(110,80,255,.18),transparent 70%),
+             radial-gradient(35% 30% at 85% 75%,rgba(40,170,255,.14),transparent 70%),
+             radial-gradient(30% 25% at 60% 10%,rgba(255,120,200,.08),transparent 70%)}
+#progress{position:fixed;top:0;left:0;height:3px;width:0;z-index:50;background:linear-gradient(90deg,var(--accent),var(--accent2));box-shadow:0 0 12px var(--accent)}
+#topbar{position:fixed;top:3px;left:0;right:0;z-index:40;display:flex;justify-content:space-between;align-items:center;padding:8px 18px;font-size:13px;color:var(--muted);
+  background:linear-gradient(180deg,rgba(5,6,15,.85),transparent);pointer-events:none}
+#topbar b{color:var(--text);font-weight:600}
+.tb-r{display:flex;align-items:center;gap:8px;pointer-events:auto}
+.tbb{font-size:12px!important;padding:3px 10px!important}
+.en-only{display:none} html[lang=en] .en-only{display:block}
+html[lang=en] body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Helvetica,Arial,"PingFang SC","Noto Sans CJK SC","Microsoft YaHei",sans-serif}
+html[lang=en] details.q summary:after{content:"  ▸ click for answer"}
+html[lang=en] details.q[open] summary:after{content:"  ▾ hide"}
+#main{position:relative;z-index:1;height:100vh;overflow-y:auto;scroll-snap-type:y proximity;scroll-behavior:smooth}
+section.slide{min-height:100vh;scroll-snap-align:start;padding:72px 6vw 64px;display:flex;flex-direction:column;justify-content:center;max-width:1180px;margin:0 auto}
+h1{font-size:clamp(30px,5vw,54px);line-height:1.2;letter-spacing:.02em;
+  background:linear-gradient(90deg,#fff,var(--accent) 50%,var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font-size:clamp(24px,3.4vw,38px);line-height:1.3;margin-bottom:6px}
+h2 .no{font-size:.6em;color:var(--accent);display:block;letter-spacing:.2em;font-weight:500}
+h3{font-size:19px;margin:22px 0 8px;color:var(--gold)}
+p{margin:8px 0}
+.en{color:var(--muted);font-size:.86em}
+.tldr{border-left:4px solid var(--accent);background:rgba(124,196,255,.08);padding:12px 16px;border-radius:0 12px 12px 0;margin:14px 0;font-size:1.05em}
+.tldr b{color:var(--accent)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin:12px 0;backdrop-filter:blur(6px)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+ul.pts{padding-left:1.2em} ul.pts li{margin:4px 0}
+.note{font-size:13px;color:var(--muted)}
+.tag{display:inline-block;font-size:12px;padding:1px 8px;border-radius:99px;border:1px solid var(--line);color:var(--muted);margin-left:6px;vertical-align:middle}
+/* speech bubbles */
+.say{display:flex;gap:12px;align-items:flex-start;margin:14px 0}
+.say.r{flex-direction:row-reverse}
+.ava{flex:0 0 46px;height:46px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:18px;color:#0b0d1d;box-shadow:0 0 18px rgba(255,255,255,.15)}
+.ava.ein{background:linear-gradient(135deg,#ffe0a3,#ff9f6e)} .ava.kong{background:linear-gradient(135deg,#ffe6a8,#e0b25c)}
+.ava.wang{background:linear-gradient(135deg,#a9f5d0,#4dc29a)} .ava.lu{background:linear-gradient(135deg,#ffc4dc,#e57aa8)}
+.ava.su{background:linear-gradient(135deg,#c7d4ff,#7c8dff)}
+.bubble{position:relative;background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:14px;padding:10px 14px;max-width:760px}
+.bubble .who{font-size:12px;color:var(--muted);display:block;margin-bottom:2px}
+.bubble .src{font-size:12px;color:var(--gold);display:block;margin-top:4px}
+/* tables */
+.tri{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px}
+.tri>div{border-radius:14px;padding:14px 16px;border:1px solid var(--line);background:var(--panel)}
+.tri h4{font-size:15px;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.tri h4:before{content:"";width:10px;height:10px;border-radius:50%}
+.tri .ok h4:before{background:var(--ok);box-shadow:0 0 10px var(--ok)}
+.tri .mid h4:before{background:var(--mid);box-shadow:0 0 10px var(--mid)}
+.tri .no h4:before{background:var(--no);box-shadow:0 0 10px var(--no)}
+.tri .ok{border-top:3px solid var(--ok)} .tri .mid{border-top:3px solid var(--mid)} .tri .no{border-top:3px solid var(--no)}
+.tri ul{padding-left:1.1em;font-size:14.5px} .tri li{margin:4px 0}
+/* demos */
+.demo{background:rgba(8,10,26,.85);border:1px solid var(--line);border-radius:16px;padding:12px;margin:14px 0}
+.demo canvas{width:100%;display:block;border-radius:10px;background:#03040b}
+.demo .ctl{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:10px;font-size:14px}
+.demo .cap{font-size:13px;color:var(--muted);margin-top:6px}
+button.btn{font-family:inherit;font-size:14px;color:var(--text);background:rgba(124,196,255,.12);border:1px solid rgba(124,196,255,.4);border-radius:10px;padding:7px 14px;cursor:pointer;transition:.2s}
+button.btn:hover{background:rgba(124,196,255,.25)}
+button.btn.on{background:linear-gradient(90deg,rgba(124,196,255,.45),rgba(197,139,255,.45));border-color:#fff}
+input[type=range]{accent-color:var(--accent);width:220px;max-width:60vw}
+/* links */
+.links{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;margin-top:10px}
+a.lk{display:block;text-decoration:none;color:var(--text);background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 14px;transition:.2s}
+a.lk:hover{border-color:var(--accent);transform:translateY(-2px)}
+a.lk .t{font-weight:600;font-size:15px} a.lk .d{font-size:12.5px;color:var(--muted);margin-top:3px;word-break:break-all}
+.badge{display:inline-block;font-size:11px;padding:1px 7px;border-radius:6px;margin-right:6px;font-weight:600}
+.b-yt{background:#ff5d6c33;color:#ff9aa5;border:1px solid #ff5d6c66}
+.b-bl{background:#33c2ff2a;color:#8fdcff;border:1px solid #33c2ff66}
+.b-web{background:#ffffff14;color:#cfd6ff;border:1px solid #ffffff33}
+.ext h3{font-size:15px;color:var(--muted);margin-top:22px}
+/* cover */
+.thesis{counter-reset:t;list-style:none;margin-top:10px}
+.thesis li{counter-increment:t;position:relative;padding:12px 16px 12px 56px;margin:10px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;font-size:1.08em}
+.thesis li:before{content:counter(t);position:absolute;left:14px;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#071026;font-weight:800}
+.cast{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.cast span{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)}
+.cast .ava{width:28px;height:28px;flex-basis:28px;font-size:13px}
+.hint{margin-top:22px;font-size:13px;color:var(--muted)} kbd{border:1px solid var(--line);border-radius:5px;padding:0 6px;background:#ffffff10;font-family:inherit}
+/* quiz */
+details.q{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 16px;margin:10px 0}
+details.q summary{cursor:pointer;font-weight:600;list-style:none}
+details.q summary:after{content:"  ▸ 点击看答案";color:var(--accent);font-weight:400;font-size:13px}
+details.q[open] summary:after{content:"  ▾ 收起"}
+details.q .a{margin-top:8px;color:#cfe6ff;border-top:1px dashed var(--line);padding-top:8px}
+/* side dots */
+#dots{position:fixed;right:16px;top:50%;transform:translateY(-50%);z-index:40;display:flex;flex-direction:column;gap:10px}
+#dots a{width:10px;height:10px;border-radius:50%;background:#ffffff30;display:block;position:relative;transition:.2s}
+#dots a.act{background:var(--accent);box-shadow:0 0 10px var(--accent);transform:scale(1.3)}
+#dots a span{position:absolute;right:18px;top:50%;transform:translateY(-50%);white-space:nowrap;font-size:12px;background:#000c;padding:2px 8px;border-radius:6px;opacity:0;pointer-events:none;transition:.2s}
+#dots a:hover span{opacity:1}
+#navbtns{position:fixed;bottom:14px;right:14px;z-index:40;display:flex;gap:8px}
+#navbtns button{width:40px;height:40px;border-radius:50%;font-size:18px;padding:0}
+.recap td,.recap th{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top;font-size:15px}
+.recap{border-collapse:collapse;width:100%} .recap th{color:var(--accent);font-weight:600;white-space:nowrap}
+svg text{font-family:var(--font)}
+@media (max-width:760px){
+  body{font-size:16px}
+  section.slide{padding:64px 18px 70px}
+  .grid2,.grid3,.tri{grid-template-columns:1fr}
+  #dots{display:none}
+  #topbar [data-i18n=brand]{display:none}
+  #topbar{justify-content:flex-end}
+  .ava{flex-basis:38px;height:38px;font-size:15px}
+}
+</style>
+</head>
+<body>
+<canvas id="stars"></canvas><div class="nebula"></div>
+<div id="progress"></div>
+<div id="topbar"><span data-i18n="brand">⚛︎ 量子力学 × 弦论 · 五人辩论</span><span class="tb-r"><span id="curTitle"><b>总纲</b></span><button class="btn tbb" id="soundBtn" aria-pressed="false">🔇 声音：关</button><button class="btn tbb" id="langBtn">EN</button></span></div>
+<nav id="dots"></nav>
+<div id="navbtns"><button class="btn" id="prevBtn" aria-label="上一页">↑</button><button class="btn" id="nextBtn" aria-label="下一页">↓</button></div>
+
+<main id="main">
+
+<!-- ================= COVER ================= -->
+<section class="slide" id="s0" data-title-en="Overview" data-title="总纲">
+  <p data-i18n="t44" class="note" style="letter-spacing:.3em">一场角色扮演辩论的会议纪要</p>
+  <h1 data-i18n="h1">量子力学与弦论<br>给聪明的非物理学家</h1>
+  <p class="en" style="margin-top:6px">Quantum Mechanics &amp; String Theory — conclusion first, plain language</p>
+
+  <div class="say" style="margin-top:22px">
+    <div class="ava su">苏</div>
+    <div data-i18n="t1" class="bubble"><span class="who">苏格拉底 · 总纲（三句话）</span>
+      我先把结论放在桌上，后面每一节都只是在给这三句话补证据。</div>
+  </div>
+  <ol class="thesis">
+    <li data-i18n="th1"><b>量子力学</b>已被实验反复确认，争的只是<b>如何解释</b>。</li>
+    <li data-i18n="th2"><b>广义相对论</b>与<b>量子力学</b>在<b>黑洞</b>和<b>大爆炸</b>处打架。</li>
+    <li data-i18n="th3"><b>弦论</b>是目前呼声最高的和事佬，但<b>至今没有实验作证</b>。</li>
+  </ol>
+  <div class="cast">
+    <span data-i18n="t23"><i class="ava ein">爱</i>爱因斯坦：物理直觉与怀疑</span>
+    <span data-i18n="t24"><i class="ava kong">孔</i>孔子：分清知与不知</span>
+    <span data-i18n="t25"><i class="ava wang">王</i>王阳明：心与物、知与行</span>
+    <span data-i18n="t26"><i class="ava lu">卢</i>卢梭：替普通人发问</span>
+    <span data-i18n="t27"><i class="ava su">苏</i>苏格拉底：追问与裁决</span>
+  </div>
+  <p data-i18n="t45" class="note" style="margin-top:10px">说明：标了<span style="color:var(--gold)">「出处」</span>的是真实名言；其余气泡是角色扮演台词，用来串起观点，不是历史原话。每节末尾都有一张 <b style="color:var(--ok)">已证实</b> / <b style="color:var(--mid)">有争议</b> / <b style="color:var(--no)">未证实</b> 三栏表。</p>
+  <p class="hint" data-i18n="hint">翻页：<kbd>←</kbd><kbd>→</kbd> / <kbd>PgUp</kbd><kbd>PgDn</kbd> / 滚轮 / 右侧圆点 / 右下角按钮</p>
+</section>
+
+<!-- ================= 1 ================= -->
+<section class="slide" id="s1" data-title-en="1 Measurement" data-title="1 什么是测量">
+  <h2 data-i18n="h2_1"><span class="no">SECTION 01</span>什么是测量 <span class="en">(Measurement)</span></h2>
+  <div class="tldr" data-i18n="tldr1"><b>结论：</b>微观粒子在“没人记录它走哪条路”时表现得像波（会干涉）；一旦<b>任何东西</b>——仪器、空气分子、光子——记下了路径信息，干涉就消失。这里的“看”不需要人，也不需要意识。</div>
+
+  <div class="grid2">
+    <div class="card">
+      <h3 data-i18n="t46" style="margin-top:0">波粒二象性 <span class="en">(wave–particle duality)</span></h3>
+      <p data-i18n="t47">电子一个一个地发射，每个都在屏上打出一个<b>点</b>（像粒子）；但成千上万个点累积起来，排成明暗相间的<b>条纹</b>（像波）。1989 年日立的外村彰（Tonomura）团队用单电子做出了这个经典图像。</p>
+    </div>
+    <div class="card">
+      <h3 data-i18n="t48" style="margin-top:0">退相干 <span class="en">(decoherence)</span></h3>
+      <p data-i18n="t49">只要环境与粒子发生相互作用、留下了“它走了哪条缝”的痕迹，两条路径就不能再叠加干涉。就像无菌区一旦被碰过，就回不到无菌状态——不是有人“看”了，而是信息已泄露到环境里。</p>
+    </div>
+  </div>
+
+  <div class="demo">
+    <canvas id="slitCv" height="300"></canvas>
+    <div class="ctl">
+      <button class="btn" id="obsBtn">观测器：关</button>
+      <button class="btn" id="slitReset" data-i18n="reset">清屏重来</button>
+      <span class="note"><span data-i18n="arrived">已到达粒子：</span><b id="slitCount">0</b></span>
+    </div>
+    <div class="cap" data-i18n="cap1">动画：粒子逐个落在屏上。观测器关 → 积累成干涉条纹；观测器开（记录路径）→ 只剩两条亮带。（示意图，比例非真实）</div>
+  </div>
+
+  <div class="say">
+    <div class="ava wang">王</div>
+    <div data-i18n="t2" class="bubble"><span class="who">王阳明</span>“你未看此花时，此花与汝心同归于寂；你来看此花时，则此花颜色一时明白起来。”
+      <span class="src">出处：《传习录》下</span></div>
+  </div>
+  <div class="say r">
+    <div class="ava ein">爱</div>
+    <div data-i18n="t3" class="bubble"><span class="who">爱因斯坦</span>“你真的相信，你不看月亮时，月亮就不在那儿吗？”
+      <span class="src">出处：据派斯（A. Pais）回忆爱因斯坦与他的对话，1979 年发表于《现代物理评论》</span></div>
+  </div>
+  <div class="say">
+    <div class="ava su">苏</div>
+    <div data-i18n="t4" class="bubble"><span class="who">苏格拉底（角色台词）</span>二位都把“看”想成了人心。物理里的“测量”，指的是系统与外界发生了能留下记录的相互作用——一粒空气分子撞上去也算。</div>
+  </div>
+
+  <h3 data-i18n="t50">波函数“坍缩” <span class="en">(wavefunction collapse)</span></h3>
+  <p data-i18n="t51">测量前，量子力学只给出粒子在各处被发现的<b>概率分布</b>（|ψ|²）；测量后，你只会在<b>一个</b>位置找到它。点下方“测量”试试。</p>
+  <div class="demo">
+    <canvas id="colCv" height="300"></canvas>
+    <div class="ctl"><button class="btn" id="measureBtn" data-i18n="measure">测量</button><button class="btn" id="spreadBtn" data-i18n="spread">重置（让它再弥散开）</button></div>
+    <div class="cap" data-i18n="cap2">云团亮度 = 在该处发现粒子的概率。每次测量结果随机，但多次统计服从 |ψ|²（玻恩规则，Born rule）。</div>
+  </div>
+
+  <div class="tri">
+    <div class="ok"><h4 data-i18n="ok">已证实</h4><ul>
+      <li data-i18n="t52">单个电子/光子也能逐点累积出干涉条纹</li>
+      <li data-i18n="t53">获取“走哪条缝”的信息 → 干涉消失</li>
+      <li data-i18n="t54">C₆₀ 富勒烯干涉（Arndt 等，维也纳，Nature 1999）：大分子也有波动性</li>
+      <li data-i18n="t55">退相干被直接观测：加热的 C₇₀ 富勒烯发出热辐射，干涉随之减弱（Hackermüller 等，Nature 2004）</li>
+      <li data-i18n="t56">测量结果的统计符合 |ψ|² 概率规则</li></ul></div>
+    <div class="mid"><h4 data-i18n="mid">有争议</h4><ul>
+      <li data-i18n="t57"><b>“坍缩”是否真实发生</b>——这是哥本哈根诠释的讲法；多世界诠释里没有坍缩</li>
+      <li data-i18n="t58">测量问题：为什么每次只看到一个结果</li></ul></div>
+    <div class="no"><h4 data-i18n="no">未证实</h4><ul>
+      <li data-i18n="t59">“意识导致坍缩”——没有实验证据</li>
+      <li data-i18n="t60">宏观物体上存在客观坍缩机制（如 GRW、彭罗斯引力坍缩设想）</li></ul></div>
+  </div>
+  <div class="ext"><h3 data-i18n="ext">延伸观看</h3><div class="links" data-sec="1"></div></div>
+</section>
+
+<!-- ================= 2 ================= -->
+<section class="slide" id="s2" data-title-en="2 Superposition" data-title="2 叠加：无知还是天性">
+  <h2 data-i18n="h2_2"><span class="no">SECTION 02</span>叠加是无知还是天性？ <span class="en">(Superposition)</span></h2>
+  <div class="tldr" data-i18n="tldr2"><b>结论：</b>爱因斯坦认为叠加只是“我们不知道”（背后有隐变量）。贝尔把这个哲学之争变成了可测的不等式；实验一再违反它——<b>“局域隐变量”这条路被堵死了</b>。但量子力学到底“意味着什么”，至今没有共识。</div>
+
+  <div class="grid2">
+    <div class="card"><h3 data-i18n="t61" style="margin-top:0">叠加 <span class="en">(superposition)</span></h3>
+      <p data-i18n="t62">量子态可以是“A 和 B 的组合”，而且两部分会互相干涉——这正是双缝条纹的来源。普通的“不知道是 A 还是 B”（比如没拆的快递）不会产生干涉。</p>
+      <p data-i18n="t63"><b>薛定谔的猫</b>（Schrödinger's cat, 1935）：薛定谔本意是用“又死又活的猫”嘲讽把叠加直接搬到宏观世界的荒谬。</p></div>
+    <div class="card"><h3 data-i18n="t64" style="margin-top:0">隐变量 vs 贝尔不等式 <span class="en">(hidden variables vs Bell inequalities)</span></h3>
+      <p data-i18n="t65">1935 年 EPR 论文质疑量子力学“不完备”。1964 年贝尔（John Bell）证明：如果世界是<b>局域的</b>且结果由预先存在的隐变量决定，那么两地测量的相关性有一个上限（CHSH 形式：S ≤ 2）。量子力学预言可以超过它，最高 2√2 ≈ 2.83。</p></div>
+  </div>
+
+  <div class="demo">
+    <svg viewBox="0 0 760 210" width="100%" role="img" aria-label="贝尔不等式示意">
+      <defs><linearGradient id="gq" x1="0" x2="1"><stop offset="0" stop-color="#7cc4ff"/><stop offset="1" stop-color="#c58bff"/></linearGradient></defs>
+      <line x1="60" y1="170" x2="740" y2="170" stroke="#556" />
+      <text x="60" y="195" fill="#9aa3c7" font-size="13">0</text>
+      <text x="290" y="195" fill="#9aa3c7" font-size="13">S = 2</text>
+      <text x="380" y="195" fill="#9aa3c7" font-size="13">2√2 ≈ 2.83</text>
+      <rect x="60" y="40" width="250" height="34" rx="6" fill="#ff7a8a55" stroke="#ff7a8a"/>
+      <text x="70" y="62" fill="#fff" font-size="14" data-i18n="b1">局域隐变量理论：最多到 2</text>
+      <rect x="60" y="92" width="354" height="34" rx="6" fill="url(#gq)" opacity=".8"/>
+      <text x="70" y="114" fill="#071026" font-size="14" font-weight="700" data-i18n="b2">量子力学预言：最高可达 2√2</text>
+      <line x1="310" y1="25" x2="310" y2="170" stroke="#ffd27a" stroke-dasharray="5 5"/>
+      <text x="430" y="60" fill="#5fe0a8" font-size="14" data-i18n="b3">实验（Aspect 1982 等）：</text>
+      <text x="430" y="82" fill="#5fe0a8" font-size="14" data-i18n="b4">测得值明显 &gt; 2，与量子预言吻合</text>
+      <text x="430" y="114" fill="#9aa3c7" font-size="12.5" data-i18n="b5">2015 年起多组“无漏洞”实验再次确认</text>
+      <text x="430" y="134" fill="#9aa3c7" font-size="12.5" data-i18n="b6">（代尔夫特、维也纳、NIST）</text>
+      <line x1="337.5" y1="150" x2="387.5" y2="150" stroke="#5fe0a8" stroke-width="2"/>
+      <line x1="337.5" y1="144" x2="337.5" y2="156" stroke="#5fe0a8" stroke-width="2"/>
+      <line x1="387.5" y1="144" x2="387.5" y2="156" stroke="#5fe0a8" stroke-width="2"/>
+      <circle cx="362.5" cy="150" r="5" fill="#5fe0a8"/>
+      <text x="400" y="155" fill="#5fe0a8" font-size="12.5" data-i18n="b7">代尔夫特 2015：S = 2.42 ± 0.20</text>
+    </svg>
+    <div class="cap" data-i18n="cap3">示意：越过黄色虚线，就说明“局域 + 预先确定的答案”这对组合不成立。</div>
+  </div>
+  <div class="card">
+    <h3 data-i18n="t66" style="margin-top:0">2015：第一个“无漏洞”贝尔实验 <span class="en">(loophole-free Bell test)</span></h3>
+    <p data-i18n="t67">代尔夫特团队（Hensen et al., <i>Nature</i> 526, 682, 2015）用相距约 1.3 公里的两个金刚石电子自旋做实验：<b>S = 2.42 ± 0.20</b>（经典上限 2），p ≈ 0.039，共 245 次有效试验。</p>
+    <p data-i18n="t68"><b>它的意义在于同时堵住了主要漏洞</b>（探测效率漏洞、局域性/通信漏洞），而不是信号有多强——单看统计显著性，这个结果其实相当温和。同年，Giustina 等（维也纳）和 Shalm 等（NIST）用光子也完成了无漏洞实验，结论一致。</p>
+    <p data-i18n="t69" class="note">论文：<a href="https://doi.org/10.1038/nature15759" target="_blank" rel="noopener" style="color:var(--accent)">doi.org/10.1038/nature15759</a></p>
+  </div>
+
+  <div class="say r">
+    <div class="ava ein">爱</div>
+    <div data-i18n="t5" class="bubble"><span class="who">爱因斯坦</span>“上帝不掷骰子。”
+      <span class="src">出处：1926 年致玻恩信的流行概括；原句大意为“我确信祂不掷骰子”</span></div>
+  </div>
+  <div class="say">
+    <div class="ava su">苏</div>
+    <div data-i18n="t6" class="bubble"><span class="who">苏格拉底（角色台词）</span>阿尔伯特，实验替你回答了：骰子背后若有隐藏的答案，这些答案之间必须能“超距”通气。你最不喜欢的恰恰是超距作用。2022 年诺贝尔物理学奖授予 <b>Aspect、Clauser、Zeilinger</b>，表彰的正是这些纠缠光子实验。</div>
+  </div>
+
+  <h3 data-i18n="t70">诠释之争（仍在吵） <span class="en">(interpretations)</span></h3>
+  <div class="grid3">
+    <div data-i18n="t15" class="card"><b>哥本哈根</b> <span class="en">(Copenhagen)</span><p>波函数是预测工具；测量时“坍缩”出一个结果。最常用的教科书讲法。</p></div>
+    <div data-i18n="t16" class="card"><b>多世界</b> <span class="en">(Many-worlds, Everett 1957)</span><p>从不坍缩；每个结果都发生，分属互相退相干的“分支”。</p></div>
+    <div data-i18n="t17" class="card"><b>退相干视角</b> <span class="en">(decoherence)</span><p>解释了为何宏观上看不到叠加，但单靠它并不能说明“为什么是这一个结果”。</p></div>
+  </div>
+  <div class="say">
+    <div class="ava kong">孔</div>
+    <div data-i18n="t7" class="bubble"><span class="who">孔子</span>“知之为知之，不知为不知，是知也。”
+      <span class="src">出处：《论语·为政》</span>
+      <span class="who" style="margin-top:6px">（角色台词）算法大家都会用、结果都一样；它“到底是什么”，就老实说不知道。</span></div>
+  </div>
+  <p data-i18n="t71" class="note">另有玻姆力学（非局域隐变量）、QBism 等诠释。它们在现有实验里给出与标准量子力学相同的预言，因此目前无法用实验裁决。</p>
+
+  <div class="tri">
+    <div class="ok"><h4 data-i18n="ok">已证实</h4><ul>
+      <li data-i18n="t72">叠加与干涉是真实效应（量子计算比特即依赖于此）</li>
+      <li data-i18n="t73">贝尔不等式被违反（Aspect 1982；2015 代尔夫特、维也纳、NIST 无漏洞实验）</li>
+      <li data-i18n="t74"><b>局域</b>隐变量理论被排除</li></ul></div>
+    <div class="mid"><h4 data-i18n="mid">有争议</h4><ul>
+      <li data-i18n="t75">哪种诠释正确：哥本哈根 / 多世界 / 玻姆 / QBism…</li>
+      <li data-i18n="t76">波函数是“实在”还是“信息”</li></ul></div>
+    <div class="no"><h4 data-i18n="no">未证实</h4><ul>
+      <li data-i18n="t77">能用实验区分各诠释的方案</li>
+      <li data-i18n="t78">真正宏观物体（如一只猫）的叠加态</li></ul></div>
+  </div>
+  <div class="ext"><h3 data-i18n="ext">延伸观看</h3><div class="links" data-sec="2"></div></div>
+</section>
+
+<!-- ================= 3 ================= -->
+<section class="slide" id="s3" data-title-en="3 Why GR & QM clash" data-title="3 两大理论为何打架">
+  <h2 data-i18n="h2_3"><span class="no">SECTION 03</span>两大理论为什么打架 <span class="en">(GR vs QM)</span></h2>
+  <div class="tldr" data-i18n="tldr3"><b>结论：</b>广义相对论把引力看成<b>光滑弯曲的时空</b>；量子力学说一切都<b>离散、带概率、在涨落</b>。各管各的地盘都极准，但在“又极重又极小”的地方——<b>黑洞中心</b>和<b>大爆炸起点</b>——必须同时用两者，算出来却是无穷大。</div>
+
+  <div class="grid2">
+    <div class="card"><h3 data-i18n="t79" style="margin-top:0">广义相对论 <span class="en">(General Relativity)</span></h3>
+      <p data-i18n="t80">质量让时空弯曲，物体沿弯曲走。GPS 卫星必须修正相对论时间效应；2015 年 LIGO 直接探测到引力波。</p></div>
+    <div class="card"><h3 data-i18n="t81" style="margin-top:0">量子力学 / 量子场论 <span class="en">(QM / QFT)</span></h3>
+      <p data-i18n="t82">标准模型描述电磁、强、弱三种力，2012 年发现希格斯玻色子。所有场在小尺度上都在量子涨落。</p></div>
+  </div>
+
+  <div class="demo">
+    <canvas id="foamCv" height="300"></canvas>
+    <div class="ctl"><span data-i18n="zoom">放大倍数</span><input type="range" id="foamZoom" min="0" max="100" value="0"><span class="note" id="foamLbl">日常尺度：时空光滑弯曲</span></div>
+    <div class="cap" data-i18n="cap4">左：一个质量让时空网格平滑凹陷（广义相对论）。往右拖：越接近普朗克尺度，若引力也量子化，几何本身应剧烈涨落（“时空泡沫”是猜想性图像，未证实）。</div>
+  </div>
+
+  <h3 data-i18n="t83">为什么“直接量子化引力”行不通 <span class="en">(non-renormalizability)</span></h3>
+  <p data-i18n="t84">把引力子当作<b>点粒子</b>、照搬量子场论的方法，计算越往短距离（高能量）走，出现的无穷大越多，无法像电磁学那样用有限几个参数“吸收”掉——这叫<b>不可重整化</b>。在低能下它是好用的近似（有效场论），但在普朗克尺度失去预言能力。</p>
+  <div class="grid2">
+    <div data-i18n="t21" class="card" style="text-align:center"><div class="note">普朗克长度 <span class="en">(Planck length)</span></div><div style="font-size:30px;font-weight:700;color:var(--accent)">≈ 1.6 × 10⁻³⁵ m</div><div class="note">比质子小约 20 个数量级</div></div>
+    <div data-i18n="t22" class="card" style="text-align:center"><div class="note">普朗克能量 <span class="en">(Planck energy)</span></div><div style="font-size:30px;font-weight:700;color:var(--accent2)">≈ 10¹⁹ GeV</div><div class="note">量子引力效应变得不可忽略的能标</div></div>
+  </div>
+
+  <div class="say">
+    <div class="ava lu">卢</div>
+    <div data-i18n="t8" class="bubble"><span class="who">卢梭（角色台词）</span>两部法典各自都灵验，偏偏在最要紧的两处——黑洞和创世——互相否决。一个国家要是这样，早就宪政危机了。</div>
+  </div>
+  <div class="say r">
+    <div class="ava ein">爱</div>
+    <div data-i18n="t9" class="bubble"><span class="who">爱因斯坦（角色台词）</span>我后半生都在找统一场论，没找到。奇点不是自然的答案，而是理论在说“我在这里失效了”。</div>
+  </div>
+
+  <div class="tri">
+    <div class="ok"><h4 data-i18n="ok">已证实</h4><ul>
+      <li data-i18n="t85">广义相对论（引力波、GPS、黑洞成像）</li>
+      <li data-i18n="t86">量子场论 / 标准模型（希格斯 2012）</li>
+      <li data-i18n="t87">点粒子引力量子化不可重整化（理论计算结论）</li></ul></div>
+    <div class="mid"><h4 data-i18n="mid">有争议</h4><ul>
+      <li data-i18n="t88">奇点是真实存在，还是理论失效的标志</li>
+      <li data-i18n="t89">黑洞信息悖论如何解决</li></ul></div>
+    <div class="no"><h4 data-i18n="no">未证实</h4><ul>
+      <li data-i18n="t90">任何量子引力理论的实验证据</li>
+      <li data-i18n="t91">普朗克尺度的时空是否离散/“泡沫化”</li></ul></div>
+  </div>
+  <div class="ext"><h3 data-i18n="ext">延伸观看</h3><div class="links" data-sec="3"></div></div>
+</section>
+
+<!-- ================= 4 ================= -->
+<section class="slide" id="s4" data-title-en="4 String theory" data-title="4 弦论怎么调停">
+  <h2 data-i18n="h2_4"><span class="no">SECTION 04</span>弦论怎么调停 <span class="en">(String Theory)</span></h2>
+  <div class="tldr" data-i18n="tldr4"><b>结论：</b>弦论假设最基本的东西不是点，而是极小的<b>一维弦</b>。一根弦的不同振动方式 = 不同的粒子；其中一种闭弦振动天然带有<b>引力子</b>的性质——引力不用硬塞，自己就冒出来了。代价是：理论需要 <b>10 维</b>时空。</div>
+
+  <div class="grid2">
+    <div>
+      <div class="demo">
+        <canvas id="strCv" height="280"></canvas>
+        <div class="ctl">
+          <button class="btn mode on" data-m="1" data-i18n="mode1">模式 1 · 像电子</button>
+          <button class="btn mode" data-m="2" data-i18n="mode2">模式 2 · 像光子</button>
+          <button class="btn mode" data-m="3" data-i18n="mode3">模式 3 · 像引力子</button>
+        </div>
+        <div class="cap" data-i18n="cap5">⚠️ 卡通示意：真实的弦谱与粒子对应远比“一根弦弹三种音”复杂，标签只为帮助直觉。引力子对应的是<b>闭弦</b>中无质量、自旋 2 的振动态。</div>
+      </div>
+    </div>
+    <div>
+      <div class="card"><h3 data-i18n="t92" style="margin-top:0">为什么有望驯服无穷大</h3>
+        <p data-i18n="t93">点粒子相互作用发生在一个<b>点</b>上，距离可以无限小 → 发散。弦的相互作用是两根弦“合并成裤子形状”的曲面，没有一个尖锐的作用点，短距离行为被<b>抹平</b>。弦论振幅在微扰计算中普遍认为是有限的；严格证明到所有阶尚未完成。</p></div>
+      <div class="card"><h3 data-i18n="t94" style="margin-top:0">额外维度 <span class="en">(extra dimensions)</span></h3>
+        <p data-i18n="t95">超弦理论（superstring）的数学一致性要求 10 维时空（9 空间 + 1 时间）。多出的 6 维被认为卷曲成极小的形状，常用候选是<b>卡拉比–丘流形</b> <span class="en">(Calabi–Yau manifold)</span>。</p></div>
+    </div>
+  </div>
+
+  <h3 data-i18n="t96">花园水管类比 <span class="en">(garden-hose analogy)</span></h3>
+  <div class="demo">
+    <canvas id="hoseCv" height="260"></canvas>
+    <div class="ctl"><span data-i18n="zoom2">放大</span><input type="range" id="hoseZoom" min="0" max="100" value="0"><span class="note" id="hoseLbl">远看：一条线（1 维）</span></div>
+    <div class="cap" data-i18n="cap6">远看水管是一条线；凑近发现每一点上都还有一个小圆圈方向——蚂蚁可以绕着走。额外维度若存在，也许就这样卷在每一个空间点上。（实际为 6 维卷曲，此处用 1 个圆圈示意）</div>
+  </div>
+
+  <h3 data-i18n="t97">弦论的战绩 <span class="en">(achievements)</span></h3>
+  <div class="say">
+    <div class="ava wang">王</div>
+    <div data-i18n="t10" class="bubble"><span class="who">王阳明（角色台词）</span>知而不行，只是未知。弦论虽未经实验，但在“行”上——数学与计算——确有三件实事：</div>
+  </div>
+  <div class="grid3">
+    <div data-i18n="t18" class="card"><b>① 自带引力子</b><p>闭弦谱中必然出现无质量自旋 2 粒子，低能下重现广义相对论。</p></div>
+    <div data-i18n="t19" class="card"><b>② 数清黑洞微观态</b><p>Strominger–Vafa（1996）在某类<b>极端黑洞</b>上数出微观状态数，所得熵与贝肯斯坦–霍金公式 S = A/4（普朗克单位）精确吻合。</p></div>
+    <div data-i18n="t20" class="card"><b>③ 全息对偶 AdS/CFT</b><p>Maldacena（1997）提出：一个空间里的引力理论 ⇔ 其边界上无引力的量子场论。已作为计算工具用于夸克–胶子等离子体、凝聚态强关联体系的研究。</p></div>
+  </div>
+
+  <div class="tri">
+    <div class="ok"><h4 data-i18n="ok4">已证实<span class="note">（仅指理论/数学内部检验，非实验）</span></h4><ul>
+      <li data-i18n="t98">弦谱包含引力子</li>
+      <li data-i18n="t99">特定极端黑洞熵的微观计数与 S=A/4 吻合</li>
+      <li data-i18n="t100">AdS/CFT 通过大量非平凡计算检验</li></ul></div>
+    <div class="mid"><h4 data-i18n="mid">有争议</h4><ul>
+      <li data-i18n="t101">弦论是否就是“那个”量子引力理论</li>
+      <li data-i18n="t102">微扰振幅是否到所有阶都有限：普遍认为有限，严格证明尚未完成</li>
+      <li data-i18n="t103">额外维如何紧化、选哪一种</li>
+      <li data-i18n="t104">AdS/CFT 用于真实 QCD/材料是近似类比；其本身尚无严格数学证明</li></ul></div>
+    <div class="no"><h4 data-i18n="no">未证实</h4><ul>
+      <li data-i18n="t105">弦本身的存在</li>
+      <li data-i18n="t106">额外维度</li>
+      <li data-i18n="t107">超对称粒子</li></ul></div>
+  </div>
+  <div class="ext"><h3 data-i18n="ext">延伸观看</h3><div class="links" data-sec="4"></div></div>
+</section>
+
+<!-- ================= 5 ================= -->
+<section class="slide" id="s5" data-title-en="5 Missing evidence" data-title="5 还欠哪些证据">
+  <h2 data-i18n="h2_5"><span class="no">SECTION 05</span>它还欠哪些证据 <span class="en">(The missing evidence)</span></h2>
+  <div class="tldr" data-i18n="tldr5"><b>结论：</b>弦论的典型效应在普朗克能标（~10¹⁹ GeV），最强的对撞机 LHC 只有 ~10⁴ GeV，差约 <b>15 个数量级</b>。不需要智子，自然本身就把这扇门锁死了——至少用对撞机直接撞是如此。</div>
+  <p class="card" style="margin-top:0" data-i18n="lowscale">这是典型情形。有些模型让额外维度更大、弦能标更低，LHC 专门搜寻过（如大额外维度、微型黑洞），至今也没找到。</p>
+
+  <div class="demo">
+    <svg viewBox="0 0 800 220" width="100%" role="img" aria-label="能标对比">
+      <defs><linearGradient id="ge" x1="0" x2="1"><stop offset="0" stop-color="#5fe0a8"/><stop offset=".25" stop-color="#7cc4ff"/><stop offset="1" stop-color="#c58bff"/></linearGradient></defs>
+      <rect x="40" y="100" width="720" height="10" rx="5" fill="url(#ge)" opacity=".7"/>
+      <g fill="#9aa3c7" font-size="12" id="ticks"></g>
+      <g id="mk"></g>
+      <path d="M 225 66 Q 480 -10 728 66" fill="none" stroke="#ffd27a" stroke-width="2" stroke-dasharray="6 5"/>
+      <text x="480" y="24" text-anchor="middle" fill="#ffd27a" font-size="15" font-weight="700" data-i18n="e1">相差约 10¹⁵ 倍</text>
+      <text x="400" y="208" text-anchor="middle" fill="#9aa3c7" font-size="12" data-i18n="e2">能量（GeV，对数刻度：每一格 ×10）</text>
+    </svg>
+    <div class="cap" data-i18n="cap7">LHC 对撞能量 13.6 TeV ≈ 1.4×10⁴ GeV；普朗克能量 ≈ 1.2×10¹⁹ GeV。类比：放大镜能看清约 0.1 毫米，原子约 10⁻¹⁰ 米，差“只有”6 个数量级——这里的差距是 15 个。</div>
+  </div>
+
+  <div class="grid2">
+    <div class="card"><h3 data-i18n="t108" style="margin-top:0">超对称没现身 <span class="en">(SUSY)</span></h3>
+      <p data-i18n="t109">超对称给每种粒子配一个“超伙伴”，弦论通常需要它。LHC 至今<b>没有找到</b>超对称粒子，这让<b>最简单的低能超对称模型</b>压力很大；但超对称也可能出现在更高能标，所以这<b>不等于</b>弦论被否证。</p></div>
+    <div class="card"><h3 data-i18n="t110" style="margin-top:0">景观问题 <span class="en">(string landscape)</span></h3>
+      <p data-i18n="t111">额外维卷法多到常被估计为 ~10⁵⁰⁰ 种“真空”，每种对应一套不同的低能物理。批评者说：什么结果都能找到一种卷法来配，理论还能被证伪吗？（可证伪性，falsifiability）</p></div>
+  </div>
+
+  <div class="say">
+    <div class="ava lu">卢</div>
+    <div data-i18n="t11" class="bubble"><span class="who">卢梭（角色台词）</span>一个能解释一切可能世界的理论，等于没告诉我们住的是哪一个。普通纳税人有权问：这张支票什么时候兑现？</div>
+  </div>
+  <div class="say r">
+    <div class="ava wang">王</div>
+    <div data-i18n="t12" class="bubble"><span class="who">王阳明（角色台词）</span>可它已经在别处“行”了：全息对偶成了算强关联体系的工具，黑洞熵也算对了。</div>
+  </div>
+  <div class="say">
+    <div class="ava su">苏</div>
+    <div data-i18n="t13" class="bubble" style="border-color:var(--gold)"><span class="who">苏格拉底 · 裁决（角色台词）</span>弦论是一张数学上很硬的支票——<b style="color:var(--gold)">可以收进保险柜，不能拿去兑现。</b>在实验盖章之前，它是最有希望的候选，不是已知的事实。</div>
+  </div>
+
+  <div class="tri">
+    <div class="ok"><h4 data-i18n="ok">已证实</h4><ul>
+      <li data-i18n="t112">LHC 以 13.6 TeV 运行，迄今未见超对称粒子</li>
+      <li data-i18n="t113">普朗克能标比 LHC 高约 15 个数量级</li></ul></div>
+    <div class="mid"><h4 data-i18n="mid">有争议</h4><ul>
+      <li data-i18n="t114">~10⁵⁰⁰ 真空的景观是否让弦论不可证伪</li>
+      <li data-i18n="t115">人择原理能否算科学解释</li>
+      <li data-i18n="t116">投入弦论研究的资源是否合理</li></ul></div>
+    <div class="no"><h4 data-i18n="no">未证实</h4><ul>
+      <li data-i18n="t117">任何弦论独有预言被实验验证</li>
+      <li data-i18n="t118">超对称、额外维度</li>
+      <li data-i18n="t119">低弦能标/大额外维度模型的信号（LHC 搜寻大额外维度、微型黑洞，至今未见）</li></ul></div>
+  </div>
+  <div class="ext"><h3 data-i18n="ext">延伸观看</h3><div class="links" data-sec="5"></div></div>
+</section>
+
+<!-- ================= RECAP ================= -->
+<section class="slide" id="s6" data-title-en="Recap + quiz" data-title="一页回顾 + 思考题">
+  <h2 data-i18n="h2_6"><span class="no">RECAP</span>一页回顾</h2>
+  <div class="card" style="overflow-x:auto">
+  <table class="recap">
+    <tr><th data-i18n="t34">测量</th><td data-i18n="t39">“看”= 环境留下路径记录；记录一出现，干涉就消失（退相干）。坍缩是一种诠释。</td></tr>
+    <tr><th data-i18n="t35">叠加</th><td data-i18n="t40">不是单纯的“不知道”：贝尔实验排除了局域隐变量（2022 诺奖）。诠释仍在吵。</td></tr>
+    <tr><th data-i18n="t36">打架</th><td data-i18n="t41">光滑时空 vs 离散概率；点粒子引力不可重整化；冲突点：黑洞奇点、大爆炸；普朗克尺度 1.6×10⁻³⁵ m / 10¹⁹ GeV。</td></tr>
+    <tr><th data-i18n="t37">调停</th><td data-i18n="t42">弦：振动模式 = 粒子，自带引力子，微扰计算中普遍认为有限（所有阶的严格证明未完成）；需要 10 维；黑洞熵计数与 AdS/CFT 是理论战绩。</td></tr>
+    <tr><th data-i18n="t38">证据</th><td data-i18n="t43">能标差 ~15 个数量级；LHC 未见超对称；景观 ~10⁵⁰⁰ 引发可证伪性质疑。</td></tr>
+  </table></div>
+
+  <h3 data-i18n="quiz">思考题</h3>
+  <details class="q"><summary data-i18n="t28">Q1. 双缝实验里没有任何“人”盯着，只是空气分子撞了电子一下，干涉还会消失吗？</summary>
+    <div data-i18n="t31" class="a">会（只要碰撞足以留下“走哪条缝”的信息）。决定干涉是否消失的是<b>路径信息是否进入了环境</b>（退相干），与是否有人或意识在场无关。这也是为什么大分子干涉实验要在高真空里做。</div></details>
+  <details class="q"><summary data-i18n="t29">Q2. 贝尔实验否定了什么？没有否定什么？</summary>
+    <div data-i18n="t32" class="a">否定了“<b>局域</b> + 结果事先确定（隐变量）”这一组合。没有否定量子力学本身（反而证实了它），也没有裁决哪种诠释正确——例如非局域的玻姆力学仍与实验相容。纠缠也不能用来超光速传递信息。</div></details>
+  <details class="q"><summary data-i18n="t30">Q3. LHC 没找到超对称粒子，弦论是不是就被证伪了？</summary>
+    <div data-i18n="t33" class="a">不是。它主要压缩了“在 LHC 能区就出现超对称”的最简单模型；弦论需要的超对称可能在更高能标。弦论真正的困境是：特有效应在 ~10¹⁹ GeV，比 LHC 高约 15 个数量级，加上景观问题，使它目前<b>难以被检验</b>——这与“已被否证”是两回事。</div></details>
+
+  <div class="say" style="margin-top:18px">
+    <div class="ava su">苏</div>
+    <div data-i18n="t14" class="bubble"><span class="who">苏格拉底</span>回到开头三句话：量子力学——证据确凿，解释未定；两大理论——在黑洞与大爆炸处打架；弦论——最有希望的和事佬，尚无实验作证。</div>
+  </div>
+  <div class="ext"><h3 data-i18n="ext0">延伸阅读（总表）</h3><div class="links" data-sec="0"></div></div>
+  <p data-i18n="t120" class="note" style="margin-top:20px">本课件所有链接均在制作时用 curl 检查过可访问（B 站对脚本返回 412 反爬，非失效）。YouTube 卡片在中国大陆需科学上网。</p>
+</section>
+</main>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------- i18n dictionary (zh/en) ---------- */
+var LANG="zh"; try{LANG=localStorage.getItem("qc_lang")||"zh";}catch(e){}
+var D={
+ zh:{src:"电子源",obs:"观测器",screen:"屏幕",stats:"统计",obsOff:"观测器：关",obsOn:"观测器：开（记录路径）",
+  psi:"|ψ|²（沿水平方向）",found:"在这里发现了粒子！",before:"测量前：只有概率云",
+  colcap:"坍缩是哥本哈根诠释的讲法；多世界诠释里没有坍缩。",
+  foam0:"日常尺度：时空光滑弯曲",foam1:"越来越小……量子涨落开始显现（猜想）",foam2:"≈普朗克尺度 1.6×10⁻³⁵ m：几何本身在涨落？（未证实）",
+  str1:"模式 1：基本驻波 → “像电子”",str2:"模式 2：更高一阶 → “像光子”",str3:"模式 3：闭弦的四极振动 → “像引力子”",cartoon:"卡通示意 · 非真实比例",
+  hose0:"远看：一条线（1 维）",hose1:"凑近：原来有粗细……",hose2:"近看：每一点都多出一个小圆圈方向（卷曲维度）",ant:"蚂蚁绕圈走 = 卷曲方向",zoomx:"放大 ×10^",
+  mk_p:"质子质量 ~1 GeV",mk_h:"希格斯 125 GeV",mk_l:"LHC 13.6 TeV",mk_pl:"普朗克能量 ~10¹⁹ GeV",
+  sOff:"🔇 声音：关",sOn:"🔊 声音：开",langBtn:"EN",
+  b_yt:"YouTube · 需科学上网",b_bl:"B站 · 国内可看",b_web:"网页"},
+ en:{src:"Source",obs:"Detector",screen:"Screen",stats:"Counts",obsOff:"Detector: OFF",obsOn:"Detector: ON (records path)",
+  psi:"|ψ|² (horizontal)",found:"Particle found here!",before:"Before measurement: only a probability cloud",
+  colcap:"Collapse is the Copenhagen interpretation's language; many-worlds has no collapse.",
+  foam0:"Everyday scale: smooth curved spacetime",foam1:"Smaller and smaller… quantum fluctuations appear (conjecture)",foam2:"≈ Planck scale 1.6×10⁻³⁵ m: geometry itself fluctuating? (unproven)",
+  str1:"Mode 1: fundamental → “electron-like”",str2:"Mode 2: next harmonic → “photon-like”",str3:"Mode 3: closed-string quadrupole → “graviton-like”",cartoon:"Cartoon · not to scale",
+  hose0:"From afar: a line (1D)",hose1:"Closer: it has thickness…",hose2:"Up close: each point has an extra little circle (curled-up dimension)",ant:"Ant walking around = curled dimension",zoomx:"Zoom ×10^",
+  mk_p:"Proton mass ~1 GeV",mk_h:"Higgs 125 GeV",mk_l:"LHC 13.6 TeV",mk_pl:"Planck energy ~10¹⁹ GeV",
+  sOff:"🔇 Sound: off",sOn:"🔊 Sound: on",langBtn:"中文",
+  b_yt:"YouTube · VPN needed in mainland China",b_bl:"Bilibili · accessible in China",b_web:"Web",
+  /* static elements */
+  brand:"⚛︎ Quantum Mechanics × String Theory · A five-person debate",
+  h1:"Quantum Mechanics &amp; String Theory<br>for the Smart Non-Physicist",
+  th1:"<b>Quantum mechanics</b> has been confirmed by experiment again and again; the only dispute is <b>how to interpret it</b>.",
+  th2:"<b>General relativity</b> and <b>quantum mechanics</b> clash at <b>black holes</b> and the <b>Big Bang</b>.",
+  th3:"<b>String theory</b> is the most popular peacemaker, but <b>no experiment supports it yet</b>.",
+  hint:"Navigate: <kbd>←</kbd><kbd>→</kbd> / <kbd>PgUp</kbd><kbd>PgDn</kbd> / scroll / side dots / corner buttons",
+  h2_1:'<span class="no">SECTION 01</span>What is measurement?',
+  h2_2:'<span class="no">SECTION 02</span>Superposition: ignorance or nature?',
+  h2_3:'<span class="no">SECTION 03</span>Why the two theories clash',
+  h2_4:'<span class="no">SECTION 04</span>How string theory mediates',
+  h2_5:'<span class="no">SECTION 05</span>The evidence it still owes',
+  h2_6:'<span class="no">RECAP</span>One-page recap',
+  tldr1:"<b>Bottom line:</b> Microscopic particles behave like waves (they interfere) when nothing records which path they took. Once <b>anything</b> — a detector, an air molecule, a photon — records path information, the interference disappears. “Looking” needs no human and no consciousness.",
+  tldr2:"<b>Bottom line:</b> Einstein thought superposition only reflected our ignorance (hidden variables). Bell turned this into a testable inequality; experiments violate it again and again — <b>local hidden variables are ruled out</b>. What quantum mechanics “means” is still not agreed.",
+  tldr3:"<b>Bottom line:</b> General relativity treats gravity as <b>smoothly curved spacetime</b>; quantum mechanics says everything is <b>discrete, probabilistic and fluctuating</b>. Each is superbly accurate on its own turf, but where things are both very heavy and very small — <b>black-hole centers</b> and <b>the Big Bang</b> — you need both, and the math gives infinities.",
+  tldr4:"<b>Bottom line:</b> String theory assumes the basic objects are tiny <b>one-dimensional strings</b>, not points. Different vibration modes = different particles; one closed-string mode has the properties of the <b>graviton</b>, so gravity appears naturally. The price: <b>10 spacetime dimensions</b>.",
+  tldr5:"<b>Bottom line:</b> String theory's typical effects sit at the Planck scale (~10¹⁹ GeV); the LHC reaches ~10⁴ GeV — about <b>15 orders of magnitude</b> short. No sophons needed: nature itself has locked this door, at least for direct collider tests.",
+  lowscale:"That is the typical case. Some models make extra dimensions larger and the string scale lower; the LHC has searched for these specifically (e.g. large extra dimensions, micro black holes) and found nothing so far.",
+  cap1:"Animation: particles land on the screen one by one. Detector off → interference fringes build up; detector on (path recorded) → just two bright bands. (Schematic, not to scale)",
+  cap2:"Cloud brightness = probability of finding the particle there. Each result is random, but the statistics follow |ψ|² (Born rule).",
+  cap3:"Schematic: crossing the yellow dashed line means “locality + pre-set answers” cannot both hold.",
+  cap4:"Left: a mass makes the spacetime grid dip smoothly (general relativity). Drag right: near the Planck scale, if gravity is quantized, geometry itself should fluctuate (“spacetime foam” is a speculative picture, unproven).",
+  cap5:"⚠️ Cartoon: the real string spectrum and its particle correspondence are far more complex; labels are only for intuition. The graviton corresponds to a massless, spin-2 vibration of a <b>closed</b> string.",
+  cap6:"From afar a garden hose looks like a line; up close each point has a small circular direction an ant can walk around. Extra dimensions, if they exist, might be curled up like this at every point. (Really 6 curled dimensions; one circle shown here)",
+  cap7:"LHC collision energy 13.6 TeV ≈ 1.4×10⁴ GeV; Planck energy ≈ 1.2×10¹⁹ GeV. Analogy: a magnifying glass resolves ~0.1 mm and an atom is ~10⁻¹⁰ m — “only” 6 orders of magnitude; here the gap is 15.",
+  reset:"Clear screen",arrived:"Particles arrived: ",measure:"Measure",spread:"Reset (let it spread again)",
+  mode1:"Mode 1 · electron-like",mode2:"Mode 2 · photon-like",mode3:"Mode 3 · graviton-like",
+  zoom:"Zoom",zoom2:"Zoom",ok:"Confirmed",mid:"Disputed",no:"Unconfirmed",
+  ok4:'Confirmed<span class="note"> (theory/math checks only, not experiment)</span>',
+  ext:"Further watching",ext0:"Further reading (full list)",quiz:"Think about it",
+  b1:"Local hidden variables: at most 2",b2:"Quantum prediction: up to 2√2",b3:"Experiments (Aspect 1982 etc.):",
+  b4:"measured clearly > 2, matching quantum theory",b5:"Loophole-free tests since 2015 confirm again",b6:"(Delft, Vienna, NIST)",
+  b7:"Delft 2015: S = 2.42 ± 0.20",e1:"Gap ≈ 10¹⁵×",e2:"Energy (GeV, log scale: ×10 per tick)"}
+};
+Object.assign(D.en,{"t1": "<span class=\"who\">Socrates · Overview (three sentences)</span>Let me put the conclusions on the table first; every section that follows just supplies evidence for these three sentences.", "t2": "<span class=\"who\">Wang Yangming</span>“When you have not yet looked at this flower, it and your mind together return to stillness. When you come to look at it, its colors at once become clear.”<span class=\"src\">Source: <i>Instructions for Practical Living</i> (Chuanxi Lu), Part III</span>", "t3": "<span class=\"who\">Einstein</span>“Do you really believe the moon is not there when you are not looking at it?”<span class=\"src\">Source: as recalled by Abraham Pais, published in <i>Reviews of Modern Physics</i>, 1979</span>", "t4": "<span class=\"who\">Socrates (role-play)</span>You both picture “looking” as something a mind does. In physics, a “measurement” means the system interacts with its surroundings in a way that leaves a record — a single air molecule bumping into it counts.", "t5": "<span class=\"who\">Einstein</span>“God does not play dice.”<span class=\"src\">Source: popular paraphrase of his 1926 letter to Max Born; the original says roughly “I, at any rate, am convinced that He does not throw dice.”</span>", "t6": "<span class=\"who\">Socrates (role-play)</span>Albert, experiment has answered for you: if hidden answers lay behind the dice, those answers would have to communicate “at a distance” — exactly the spooky action you disliked most. The 2022 Nobel Prize in Physics went to <b>Aspect, Clauser and Zeilinger</b> for precisely these entangled-photon experiments.", "t7": "<span class=\"who\">Confucius</span>“To know what you know and to know what you do not know — that is true knowledge.”<span class=\"src\">Source: <i>Analects</i>, “Wei Zheng” (2.17)</span> <span class=\"who\" style=\"margin-top:6px\">(role-play) Everyone uses the same rules and gets the same results; as for what it “really is”, honestly say we do not know.</span>", "t8": "<span class=\"who\">Rousseau (role-play)</span>Two legal codes, each reliable on its own, overrule each other in exactly the two places that matter most — black holes and the creation of the universe. A state in that condition would already be in a constitutional crisis.", "t9": "<span class=\"who\">Einstein (role-play)</span>I spent the second half of my life searching for a unified field theory and never found it. A singularity is not nature’s answer; it is the theory saying “I break down here.”", "t10": "<span class=\"who\">Wang Yangming (role-play)</span>To know without acting is not yet to know. String theory has not been tested by experiment, but in “action” — mathematics and calculation — it has three real accomplishments:", "t11": "<span class=\"who\">Rousseau (role-play)</span>A theory that can describe every possible world has not told us which one we live in. Ordinary taxpayers have the right to ask: when can this cheque be cashed?", "t12": "<span class=\"who\">Wang Yangming (role-play)</span>But it is already “acting” elsewhere: holographic duality has become a tool for strongly coupled systems, and the black-hole entropy came out right.", "t13": "<span class=\"who\">Socrates · Verdict (role-play)</span>String theory is a mathematically solid cheque — <b style=\"color:var(--gold)\">one you can keep in the safe, but cannot cash.</b> Until experiment puts its stamp on it, it is the most promising candidate, not an established fact.", "t14": "<span class=\"who\">Socrates</span>Back to the three opening sentences: quantum mechanics — evidence solid, interpretation unsettled; the two great theories — clash at black holes and the Big Bang; string theory — the most promising peacemaker, still without experimental support.", "t15": "<b>Copenhagen</b><p>The wavefunction is a tool for prediction; on measurement it “collapses” to one outcome. The most common textbook wording.</p>", "t16": "<b>Many-worlds</b> <span class=\"en\">(Everett 1957)</span><p>There is never any collapse; every outcome happens, in mutually decohered “branches”.</p>", "t17": "<b>Decoherence view</b><p>Explains why we never see superpositions at the macroscopic scale, but on its own does not explain “why this particular outcome”.</p>", "t18": "<b>① A built-in graviton</b><p>The closed-string spectrum necessarily contains a massless spin-2 particle, and general relativity is recovered at low energies.</p>", "t19": "<b>② Counting black-hole microstates</b><p>Strominger–Vafa (1996) counted the microscopic states of a class of <b>extremal black holes</b>; the resulting entropy matches the Bekenstein–Hawking formula S = A/4 (Planck units) exactly.</p>", "t20": "<b>③ Holography: AdS/CFT</b><p>Maldacena (1997) proposed that a gravitational theory in a region of space ⇔ a quantum field theory without gravity on its boundary. It is used as a calculational tool for quark–gluon plasma and strongly correlated condensed-matter systems.</p>", "t21": "<div class=\"note\">Planck length</div><div style=\"font-size:30px;font-weight:700;color:var(--accent)\">≈ 1.6 × 10⁻³⁵ m</div><div class=\"note\">About 20 orders of magnitude smaller than a proton</div>", "t22": "<div class=\"note\">Planck energy</div><div style=\"font-size:30px;font-weight:700;color:var(--accent2)\">≈ 10¹⁹ GeV</div><div class=\"note\">The energy scale where quantum-gravity effects can no longer be ignored</div>", "t23": "<i class=\"ava ein\">E</i>Einstein: physical intuition and doubt", "t24": "<i class=\"ava kong\">C</i>Confucius: separating known from unknown", "t25": "<i class=\"ava wang\">W</i>Wang Yangming: mind and matter, knowing and acting", "t26": "<i class=\"ava lu\">R</i>Rousseau: asking on behalf of ordinary people", "t27": "<i class=\"ava su\">S</i>Socrates: questioning and verdict", "t28": "Q1. In a double-slit experiment with no “person” watching — just an air molecule bumping into the electron — does the interference still disappear?", "t29": "Q2. What did the Bell experiments rule out, and what did they not rule out?", "t30": "Q3. The LHC has not found supersymmetric particles — does that falsify string theory?", "t31": "Yes (as long as the collision leaves enough “which-slit” information). What decides whether interference disappears is <b>whether path information has leaked into the environment</b> (decoherence), not whether a person or a consciousness is present. That is also why large-molecule interference experiments are done in high vacuum.", "t32": "They ruled out the combination “<b>locality</b> + outcomes fixed in advance (hidden variables)”. They did not refute quantum mechanics (they confirmed it), nor did they decide which interpretation is right — for example, non-local Bohmian mechanics remains consistent with experiment. Entanglement also cannot be used to send information faster than light.", "t33": "No. It mainly squeezes the simplest models in which supersymmetry appears already in the LHC energy range; the supersymmetry string theory needs could sit at higher energies. String theory’s real difficulty is that its distinctive effects lie at ~10¹⁹ GeV, about 15 orders of magnitude above the LHC, which together with the landscape problem makes it currently <b>hard to test</b> — not the same thing as “already falsified”.", "t34": "Measurement", "t35": "Superposition", "t36": "The clash", "t37": "Mediation", "t38": "Evidence", "t39": "“Looking” = the environment keeps a record of the path; once a record exists, interference disappears (decoherence). Collapse is an interpretation.", "t40": "Not mere “not knowing”: Bell experiments ruled out local hidden variables (2022 Nobel Prize). The interpretation debate continues.", "t41": "Smooth spacetime vs discrete probabilities; point-particle quantum gravity is non-renormalizable; flashpoints: black-hole singularities and the Big Bang; Planck scale 1.6×10⁻³⁵ m / 10¹⁹ GeV.", "t42": "Strings: vibration modes = particles, graviton built in; widely believed finite in perturbation theory (all-order proof incomplete); needs 10 dimensions; black-hole entropy counting and AdS/CFT are its theoretical successes.", "t43": "Energy gap ~15 orders of magnitude; no supersymmetry seen at the LHC; a landscape of ~10⁵⁰⁰ vacua raises falsifiability concerns.", "t44": "Minutes of a role-play debate", "t45": "Note: bubbles marked <span style=\"color:var(--gold)\">“Source”</span> are genuine quotations; all others are role-play lines used to connect ideas, not historical words. Each section ends with a three-column table: <b style=\"color:var(--ok)\">Confirmed</b> / <b style=\"color:var(--mid)\">Disputed</b> / <b style=\"color:var(--no)\">Unconfirmed</b>.", "t46": "Wave–particle duality", "t47": "Electrons are fired one at a time, and each makes a single <b>dot</b> on the screen (particle-like); but thousands of dots build up into alternating bright and dark <b>fringes</b> (wave-like). In 1989 Akira Tonomura’s team at Hitachi produced this classic image with single electrons.", "t48": "Decoherence", "t49": "As soon as the environment interacts with the particle and leaves a trace of “which slit it went through”, the two paths can no longer interfere. Like a sterile field that has been touched, it cannot go back to sterile — not because someone “looked”, but because the information has leaked into the environment.", "t50": "Wavefunction “collapse”", "t51": "Before measurement, quantum mechanics only gives the <b>probability distribution</b> (|ψ|²) for where the particle will be found; after measurement you find it in just <b>one</b> place. Click “Measure” below to try.", "t52": "Single electrons/photons build up interference fringes dot by dot", "t53": "Obtaining “which-slit” information → interference disappears", "t54": "C₆₀ fullerene interference (Arndt et al., Vienna, Nature 1999): large molecules are wave-like too", "t55": "Decoherence observed directly: heated C₇₀ fullerenes emit thermal radiation and their interference weakens accordingly (Hackermüller et al., Nature 2004)", "t56": "Measurement statistics follow the |ψ|² probability rule", "t57": "<b>Whether “collapse” really happens</b> — collapse is the Copenhagen interpretation’s wording; many-worlds has no collapse", "t58": "The measurement problem: why we see only one outcome each time", "t59": "“Consciousness causes collapse” — no experimental evidence", "t60": "An objective collapse mechanism for macroscopic objects (e.g. GRW, Penrose’s gravitational collapse proposal)", "t61": "Superposition", "t62": "A quantum state can be a “combination of A and B”, and the two parts interfere with each other — that is the origin of the double-slit fringes. Ordinary “not knowing whether it is A or B” (like an unopened parcel) produces no interference.", "t63": "<b>Schrödinger’s cat</b> (1935): Schrödinger meant the “dead-and-alive cat” to mock the absurdity of carrying superposition straight over to the macroscopic world.", "t64": "Hidden variables vs Bell inequalities", "t65": "The 1935 EPR paper argued that quantum mechanics is “incomplete”. In 1964 John Bell proved that if the world is <b>local</b> and outcomes are fixed by pre-existing hidden variables, correlations between measurements in two places have an upper limit (CHSH form: S ≤ 2). Quantum mechanics predicts it can be exceeded, up to 2√2 ≈ 2.83.", "t66": "2015: the first “loophole-free” Bell test", "t67": "The Delft team (Hensen et al., <i>Nature</i> 526, 682, 2015) used two diamond electron spins about 1.3 km apart: <b>S = 2.42 ± 0.20</b> (classical bound 2), p ≈ 0.039, 245 trials.", "t68": "<b>Its significance is closing the main loopholes at the same time</b> (the detection-efficiency loophole and the locality/communication loophole), not the strength of the signal — judged by statistical significance alone, the result is quite modest. The same year, Giustina et al. (Vienna) and Shalm et al. (NIST) achieved loophole-free results with photons, reaching the same conclusion.", "t69": "Paper: <a href=\"https://doi.org/10.1038/nature15759\" rel=\"noopener\" style=\"color:var(--accent)\" target=\"_blank\">doi.org/10.1038/nature15759</a>", "t70": "The interpretation debate (still ongoing)", "t71": "There are other interpretations, such as Bohmian mechanics (non-local hidden variables) and QBism. In all experiments so far they make the same predictions as standard quantum mechanics, so experiment cannot currently decide between them.", "t72": "Superposition and interference are real effects (quantum-computing qubits rely on them)", "t73": "Bell inequalities are violated (Aspect 1982; 2015 loophole-free tests at Delft, Vienna, NIST)", "t74": "<b>Local</b> hidden-variable theories are ruled out", "t75": "Which interpretation is right: Copenhagen / many-worlds / Bohm / QBism…", "t76": "Whether the wavefunction is “real” or “information”", "t77": "An experimental way to distinguish the interpretations", "t78": "Superposition of a truly macroscopic object (such as a cat)", "t79": "General relativity", "t80": "Mass curves spacetime, and objects move along the curvature. GPS satellites must correct for relativistic time effects; in 2015 LIGO directly detected gravitational waves.", "t81": "Quantum mechanics / quantum field theory", "t82": "The Standard Model describes the electromagnetic, strong and weak forces; the Higgs boson was discovered in 2012. Every field undergoes quantum fluctuations at small scales.", "t83": "Why “just quantizing gravity” fails <span class=\"en\">(non-renormalizability)</span>", "t84": "If you treat the graviton as a <b>point particle</b> and apply standard quantum field theory methods, the further you push to short distances (high energies), the more infinities appear, and unlike electromagnetism they cannot be absorbed into a finite number of parameters — this is called <b>non-renormalizability</b>. At low energies it works well as an approximation (effective field theory), but it loses predictive power at the Planck scale.", "t85": "General relativity (gravitational waves, GPS, black-hole imaging)", "t86": "Quantum field theory / Standard Model (Higgs 2012)", "t87": "Point-particle quantum gravity is non-renormalizable (a theoretical calculation result)", "t88": "Whether singularities are real, or a sign the theory breaks down", "t89": "How the black-hole information paradox is resolved", "t90": "Experimental evidence for any theory of quantum gravity", "t91": "Whether spacetime is discrete or “foamy” at the Planck scale", "t92": "Why it may tame the infinities", "t93": "Point particles interact at a single <b>point</b>, where distances can shrink to zero → divergences. Strings interact through a smooth “pair-of-trousers” surface as two strings merge, with no sharp interaction point, so short-distance behavior is <b>smeared out</b>. String amplitudes are widely believed to be finite in perturbation theory; a rigorous proof to all orders is not yet complete.", "t94": "Extra dimensions", "t95": "The mathematical consistency of superstring theory requires 10 spacetime dimensions (9 space + 1 time). The extra 6 are thought to be curled up into tiny shapes; a common candidate is a <b>Calabi–Yau manifold</b>.", "t96": "The garden-hose analogy", "t97": "String theory’s achievements", "t98": "The string spectrum contains the graviton", "t99": "Microstate counting for certain extremal black holes matches S = A/4", "t100": "AdS/CFT has passed many non-trivial calculational checks", "t101": "Whether string theory is “the” theory of quantum gravity", "t102": "Whether amplitudes are finite to all orders: widely believed finite in perturbation theory; all-order proof incomplete", "t103": "How the extra dimensions are compactified, and which choice", "t104": "Applying AdS/CFT to real QCD or materials is an approximate analogy; the duality itself has no rigorous mathematical proof", "t105": "The existence of strings themselves", "t106": "Extra dimensions", "t107": "Supersymmetric particles", "t108": "Supersymmetry hasn’t shown up <span class=\"en\">(SUSY)</span>", "t109": "Supersymmetry gives every particle a “superpartner”, and string theory usually needs it. The LHC has <b>not found</b> any supersymmetric particles so far, putting heavy pressure on <b>the simplest low-energy supersymmetric models</b>; but supersymmetry could appear at higher energies, so this <b>does not</b> falsify string theory.", "t110": "The landscape problem", "t111": "The ways to curl up the extra dimensions are so numerous — often estimated at ~10⁵⁰⁰ “vacua” — and each gives different low-energy physics. Critics ask: if some compactification can fit any result, can the theory still be falsified? (falsifiability)", "t112": "The LHC runs at 13.6 TeV and has seen no supersymmetric particles so far", "t113": "The Planck scale is about 15 orders of magnitude above the LHC", "t114": "Whether a landscape of ~10⁵⁰⁰ vacua makes string theory unfalsifiable", "t115": "Whether the anthropic principle counts as a scientific explanation", "t116": "Whether the resources devoted to string theory are justified", "t117": "Experimental confirmation of any prediction unique to string theory", "t118": "Supersymmetry, extra dimensions", "t119": "Signals of low-string-scale / large-extra-dimension models (LHC searches for large extra dimensions and micro black holes have found nothing so far)", "t120": "All links in this courseware were checked with curl when it was made (Bilibili returns 412 to scripts as anti-bot protection, not because links are dead). YouTube cards need a VPN in mainland China."});
+function T(k){return (D[LANG]&&D[LANG][k]!=null)?D[LANG][k]:(D.zh[k]!=null?D.zh[k]:k);}
+var FONT=getComputedStyle(document.body).fontFamily;
+/* ---------- links ---------- */
+var LINKS={
+ 1:[["web","PhET 量子波干涉模拟（可交互，免费）","https://phet.colorado.edu/en/simulations/quantum-wave-interference"],
+    ["yt","Looking Glass Universe：The biggest lie about the double slit experiment","https://www.youtube.com/watch?v=fbzHNBT0nl0"]],
+ 2:[["web","诺贝尔奖官网：2022 物理学奖科普说明","https://www.nobelprize.org/prizes/physics/2022/popular-information/"],
+    ["web","Quantum Flytrap 在线量子光学实验室","https://lab.quantumflytrap.com/"],
+    ["web","Hensen et al. 2015（Nature）：无漏洞贝尔实验论文","https://doi.org/10.1038/nature15759"]],
+ 3:[["bl","郭光灿院士引导您走进量子世界（整个系列，相关内容请看目录）","https://www.bilibili.com/video/BV1Qg4y1X7MV/"]],
+ 4:[["yt","Kurzgesagt：String Theory Explained","https://www.youtube.com/watch?v=Da-2h2B4faU"],
+    ["bl","ScienceClic：M 理论（中文字幕）","https://www.bilibili.com/video/BV1wi4y1v7DU/"]],
+ 5:[["yt","PBS Space Time：Why String Theory is Right","https://www.youtube.com/watch?v=iTTa9YcTe1k"],
+    ["yt","PBS Space Time：Why String Theory is Wrong","https://www.youtube.com/watch?v=IhpGdumLRqs"]],
+ 0:[["web","Wikipedia：Double-slit experiment","https://en.wikipedia.org/wiki/Double-slit_experiment"],
+    ["web","维基百科：双缝实验（中文）","https://zh.wikipedia.org/wiki/%E5%8F%8C%E7%BC%9D%E5%AE%9E%E9%AA%8C"],
+    ["web","Wikipedia：Quantum decoherence","https://en.wikipedia.org/wiki/Quantum_decoherence"],
+    ["web","Wikipedia：Bell test","https://en.wikipedia.org/wiki/Bell_test"],
+    ["web","Wikipedia：Aspect's experiment","https://en.wikipedia.org/wiki/Aspect%27s_experiment"],
+    ["web","Nobel Prize 2022 Physics 概要","https://www.nobelprize.org/prizes/physics/2022/summary/"],
+    ["web","Wikipedia：Planck units","https://en.wikipedia.org/wiki/Planck_units"],
+    ["web","Wikipedia：String theory","https://en.wikipedia.org/wiki/String_theory"],
+    ["web","维基百科：弦理论（中文）","https://zh.wikipedia.org/wiki/%E5%BC%A6%E7%90%86%E8%AE%BA"],
+    ["web","Wikipedia：Calabi–Yau manifold","https://en.wikipedia.org/wiki/Calabi%E2%80%93Yau_manifold"],
+    ["web","Wikipedia：AdS/CFT correspondence","https://en.wikipedia.org/wiki/AdS/CFT_correspondence"]]
+};
+var LINK_EN={
+ "PhET 量子波干涉模拟（可交互，免费）":"PhET Quantum Wave Interference (interactive, free)",
+ "Looking Glass Universe：The biggest lie about the double slit experiment":"Looking Glass Universe: The biggest lie about the double slit experiment",
+ "诺贝尔奖官网：2022 物理学奖科普说明":"Nobel Prize: 2022 Physics popular information",
+ "Quantum Flytrap 在线量子光学实验室":"Quantum Flytrap online quantum optics lab",
+ "Hensen et al. 2015（Nature）：无漏洞贝尔实验论文":"Hensen et al. 2015 (Nature): loophole-free Bell test",
+ "郭光灿院士引导您走进量子世界（整个系列，相关内容请看目录）":"Guo Guangcan: Into the Quantum World (full series; see playlist for relevant parts)",
+ "Kurzgesagt：String Theory Explained":"Kurzgesagt: String Theory Explained",
+ "ScienceClic：M 理论（中文字幕）":"ScienceClic: M-theory (Chinese subtitles)",
+ "PBS Space Time：Why String Theory is Right":"PBS Space Time: Why String Theory is Right",
+ "PBS Space Time：Why String Theory is Wrong":"PBS Space Time: Why String Theory is Wrong",
+ "Wikipedia：Double-slit experiment":"Wikipedia: Double-slit experiment","维基百科：双缝实验（中文）":"Wikipedia (Chinese): Double-slit experiment",
+ "Wikipedia：Quantum decoherence":"Wikipedia: Quantum decoherence","Wikipedia：Bell test":"Wikipedia: Bell test",
+ "Wikipedia：Aspect's experiment":"Wikipedia: Aspect's experiment","Nobel Prize 2022 Physics 概要":"Nobel Prize 2022 Physics summary",
+ "Wikipedia：Planck units":"Wikipedia: Planck units","Wikipedia：String theory":"Wikipedia: String theory",
+ "维基百科：弦理论（中文）":"Wikipedia (Chinese): String theory","Wikipedia：Calabi–Yau manifold":"Wikipedia: Calabi–Yau manifold",
+ "Wikipedia：AdS/CFT correspondence":"Wikipedia: AdS/CFT correspondence"};
+function renderLinks(){document.querySelectorAll(".links").forEach(function(box){box.innerHTML="";
+  (LINKS[box.dataset.sec]||[]).forEach(function(l){
+    var a=document.createElement("a");a.className="lk";a.href=l[2];a.target="_blank";a.rel="noopener";
+    var title=LANG==="en"?(LINK_EN[l[1]]||l[1]):l[1];
+    a.innerHTML='<div><span class="badge b-'+l[0]+'">'+T("b_"+l[0])+'</span></div><div class="t">'+title+'</div><div class="d">'+l[2].replace(/^https?:\/\//,"")+'</div>';
+    box.appendChild(a);});});}
+renderLinks();
+
+
+/* ---------- canvas helper ---------- */
+function setup(cv){
+  var dpr=Math.min(window.devicePixelRatio||1,2);
+  var w=cv.clientWidth, h=parseInt(cv.getAttribute("height"),10);
+  if(!cv._h) cv._h=h; h=cv._h;
+  cv.width=Math.round(w*dpr); cv.height=Math.round(h*dpr); cv.style.height=h+"px";
+  var c=cv.getContext("2d"); c.setTransform(dpr,0,0,dpr,0,0);
+  return {c:c,w:w,h:h};
+}
+var demos=[]; function reg(d){demos.push(d);d.resize();}
+window.addEventListener("resize",function(){demos.forEach(function(d){d.resize();});starsResize();});
+var visible=new Set();
+var io=new IntersectionObserver(function(es){es.forEach(function(e){ if(e.isIntersecting) visible.add(e.target); else visible.delete(e.target);});},{threshold:0});
+
+/* ---------- stars ---------- */
+var sc=document.getElementById("stars"), sx=sc.getContext("2d"), stars=[];
+function starsResize(){sc.width=innerWidth;sc.height=innerHeight;stars=[];for(var i=0;i<220;i++)stars.push({x:Math.random()*sc.width,y:Math.random()*sc.height,r:Math.random()*1.3+.2,p:Math.random()*6.28});}
+starsResize();
+function drawStars(t){sx.clearRect(0,0,sc.width,sc.height);for(var i=0;i<stars.length;i++){var s=stars[i];sx.globalAlpha=.35+.35*Math.sin(t/900+s.p);sx.fillStyle="#cfe0ff";sx.beginPath();sx.arc(s.x,s.y,s.r,0,6.283);sx.fill();}sx.globalAlpha=1;}
+
+/* ---------- 1a double slit ---------- */
+(function(){
+  var cv=document.getElementById("slitCv"),g,observe=false,hits=[],hist=new Array(120).fill(0),flying=[];
+  var btn=document.getElementById("obsBtn"),cnt=document.getElementById("slitCount");
+  function sinc(x){return Math.abs(x)<1e-6?1:Math.sin(x)/x;}
+  function P(y){ // y in [-1,1]
+    if(!observe){var s=sinc(3.2*y);return Math.pow(Math.cos(11*y),2)*s*s;}
+    return Math.exp(-Math.pow((y-0.3)/0.13,2))+Math.exp(-Math.pow((y+0.3)/0.13,2));
+  }
+  function sample(){for(var k=0;k<1000;k++){var y=Math.random()*2-1;if(Math.random()<P(y))return y;}return 0;}
+  function reset(){hits=[];hist.fill(0);flying=[];cnt.textContent="0";}
+  btn.onclick=function(){observe=!observe;btn.textContent=T(observe?"obsOn":"obsOff");btn.classList.toggle("on",observe);reset();};
+  window.__obsLabel=function(){btn.textContent=T(observe?"obsOn":"obsOff");};
+  document.getElementById("slitReset").onclick=reset;
+  var d={resize:function(){g=setup(cv);},step:function(t){
+    var c=g.c,w=g.w,h=g.h; c.clearRect(0,0,w,h);
+    var bx=w*0.3, sx0=w*0.62, sw=w*0.2, hx=sx0+sw+10, cy=h/2, amp=h*0.44;
+    // source
+    var gr=c.createRadialGradient(w*0.06,cy,0,w*0.06,cy,26);gr.addColorStop(0,"#fff");gr.addColorStop(1,"rgba(124,196,255,0)");
+    c.fillStyle=gr;c.beginPath();c.arc(w*0.06,cy,26,0,6.283);c.fill();
+    c.fillStyle="#9aa3c7";c.font="12px "+FONT;c.fillText(T("src"),w*0.06-18,cy+40);
+    // waves (only when not observed)
+    if(!observe){c.strokeStyle="rgba(124,196,255,.18)";c.lineWidth=1.2;
+      for(var i=0;i<8;i++){var r=((t/18)+i*28)%(bx-w*0.06);c.beginPath();c.arc(w*0.06,cy,r,-0.6,0.6);c.stroke();}
+      [cy-h*0.12,cy+h*0.12].forEach(function(yy){for(var i=0;i<6;i++){var r=((t/18)+i*30)%(sx0-bx);c.beginPath();c.arc(bx,yy,r,-1.1,1.1);c.stroke();}});
+    }
+    // barrier
+    c.fillStyle="#3a4170";c.fillRect(bx-4,0,8,cy-h*0.12-8);c.fillRect(bx-4,cy-h*0.12+8,8,h*0.24-16);c.fillRect(bx-4,cy+h*0.12+8,8,h);
+    if(observe){ // eye detector
+      [cy-h*0.12,cy+h*0.12].forEach(function(yy){c.strokeStyle="#ffd27a";c.lineWidth=2;c.beginPath();c.ellipse(bx+26,yy,12,7,0,0,6.283);c.stroke();c.fillStyle="#ffd27a";c.beginPath();c.arc(bx+26,yy,3,0,6.283);c.fill();});
+      c.fillStyle="#ffd27a";c.fillText(T("obs"),bx+12,cy+4);
+    }
+    // screen
+    c.fillStyle="#0a0d22";c.fillRect(sx0,0,sw,h);c.strokeStyle="#2a3160";c.strokeRect(sx0,0,sw,h);
+    // add hits
+    if(visible.has(cv)||d.force){for(var n=0;n<4;n++){var y=sample();hits.push([sx0+4+Math.random()*(sw-8),cy+y*amp]);var bi=Math.min(119,Math.max(0,Math.floor((y+1)/2*120)));hist[bi]++;
+      flying.push({y:cy+y*amp,t:0});}
+      if(hits.length>6000){hits.splice(0,hits.length-6000);} cnt.textContent=String(hits.length); maybeTick();}
+    c.fillStyle="rgba(170,220,255,.85)";for(var i=0;i<hits.length;i++){c.fillRect(hits[i][0],hits[i][1],1.6,1.6);}
+    // flying trail
+    flying=flying.filter(function(f){f.t+=0.08;return f.t<1;});
+    flying.forEach(function(f){c.fillStyle="rgba(255,255,255,"+(1-f.t)+")";c.beginPath();c.arc(sx0-6,f.y,2.5,0,6.283);c.fill();});
+    // histogram
+    var mx=Math.max.apply(null,hist)||1;c.strokeStyle=observe?"#ffd27a":"#c58bff";c.lineWidth=1.5;c.beginPath();
+    for(var i=0;i<120;i++){var yy=cy+((i+.5)/120*2-1)*amp,xx=hx+(hist[i]/mx)*(w-hx-8);i?c.lineTo(xx,yy):c.moveTo(xx,yy);}c.stroke();
+    c.fillStyle="#9aa3c7";c.fillText(T("screen"),sx0+4,14);c.fillText(T("stats"),hx,14);
+  }};
+  reg(d);io.observe(cv);
+})();
+
+/* ---------- 1b collapse ---------- */
+(function(){
+  var cv=document.getElementById("colCv"),g,cx=.5,cy=.5,sig=.18,target=.18,tc=null,measured=null,pts=[];
+  function gauss(){var u=1-Math.random(),v=Math.random();return Math.sqrt(-2*Math.log(u))*Math.cos(6.283*v);}
+  document.getElementById("measureBtn").onclick=function(){
+    var x=cx+gauss()*sig*0.9,y=cy+gauss()*sig*0.9*0.6;x=Math.min(.92,Math.max(.08,x));y=Math.min(.85,Math.max(.12,y));
+    measured=[x,y];tc=[x,y];target=.006;};
+  document.getElementById("spreadBtn").onclick=function(){target=.18;measured=null;tc=[.5,.5];};
+  var d={resize:function(){g=setup(cv);},step:function(t){
+    var c=g.c,w=g.w,h=g.h;c.clearRect(0,0,w,h);
+    sig+=(target-sig)*0.12; if(tc){cx+=(tc[0]-cx)*0.12;cy+=(tc[1]-cy)*0.12;}
+    var S=Math.min(w,h*1.6);
+    // cloud
+    var N=900;c.globalCompositeOperation="lighter";
+    for(var i=0;i<N;i++){var x=(cx+gauss()*sig)*w,y=(cy+gauss()*sig*0.6)*(h*0.82);c.fillStyle="rgba(124,170,255,0.18)";c.fillRect(x,y,2.2,2.2);}
+    var R=Math.max(6,sig*S*1.2);var gr=c.createRadialGradient(cx*w,cy*h*0.82,0,cx*w,cy*h*0.82,R);
+    gr.addColorStop(0,"rgba(197,139,255,"+(sig<.03?.9:.35)+")");gr.addColorStop(1,"rgba(197,139,255,0)");c.fillStyle=gr;c.beginPath();c.arc(cx*w,cy*h*0.82,R,0,6.283);c.fill();
+    c.globalCompositeOperation="source-over";
+    // |psi|^2 curve along bottom
+    var base=h*0.86;c.strokeStyle="#7cc4ff";c.lineWidth=1.5;c.beginPath();
+    for(var px=0;px<=w;px+=3){var xx=px/w,v=Math.exp(-Math.pow((xx-cx)/sig,2)/2);var yy=base-v*Math.min(60,6/Math.max(sig,0.02)*1.4)*0.5;px?c.lineTo(px,yy):c.moveTo(px,yy);}c.stroke();
+    c.fillStyle="#9aa3c7";c.font="12px "+FONT;c.fillText(T("psi"),8,base-4>0?base+14:base);
+    if(measured&&sig<.03){c.fillStyle="#ffd27a";c.font="bold 14px "+FONT;c.fillText(T("found"),cx*w+12,cy*h*0.82-10);}
+    else if(!measured){c.fillStyle="#cfd6ff";c.font="14px "+FONT;c.fillText(T("before"),12,22);}
+    // required caption on canvas
+    c.font="13px "+FONT;var cap=T("colcap");
+    var tw=c.measureText(cap).width;c.fillStyle="rgba(0,0,0,.6)";c.fillRect(w-tw-22,h-26,tw+16,22);c.fillStyle="#ffd27a";c.fillText(cap,w-tw-14,h-10);
+  }};
+  reg(d);io.observe(cv);
+})();
+
+/* ---------- 3 spacetime foam ---------- */
+(function(){
+  var cv=document.getElementById("foamCv"),g,z=0,sl=document.getElementById("foamZoom"),lb=document.getElementById("foamLbl");
+  sl.oninput=function(){z=sl.value/100;lb.textContent=T(z<.35?"foam0":z<.75?"foam1":"foam2");};window.__foamLbl=sl.oninput;
+  function n(x,y,t){return Math.sin(x*1.7+t*2.1)*Math.cos(y*1.3-t*1.7)+Math.sin(x*3.1-y*2.3+t*3.3)*.6+Math.sin(x*5.7+y*4.9-t*4.1)*.4;}
+  var d={resize:function(){g=setup(cv);},step:function(t){
+    var c=g.c,w=g.w,h=g.h;c.clearRect(0,0,w,h);t/=1000;
+    var cols=26,rows=12,mx=w/2,my=h*0.42;
+    function P(i,j){var x=i/cols*w,y=j/rows*h*0.9+h*0.05;var dx=x-mx,dy=(y-my)*1.6;var r2=dx*dx+dy*dy;
+      var dip=(1-z)*55*Math.exp(-r2/(w*w*0.03));var noise=z*z*16*n(i*0.9*(1+z*2),j*0.9*(1+z*2),t);
+      return [x+noise*0.6,y+dip+noise];}
+    c.lineWidth=1;
+    for(var j=0;j<=rows;j++){c.strokeStyle="rgba(124,196,255,"+(0.25+0.3*(1-z))+")";c.beginPath();for(var i=0;i<=cols;i++){var p=P(i,j);i?c.lineTo(p[0],p[1]):c.moveTo(p[0],p[1]);}c.stroke();}
+    for(var i=0;i<=cols;i++){c.strokeStyle="rgba(197,139,255,"+(0.2+0.3*z)+")";c.beginPath();for(var j=0;j<=rows;j++){var p=P(i,j);j?c.lineTo(p[0],p[1]):c.moveTo(p[0],p[1]);}c.stroke();}
+    if(z<.5){var a=1-z*2;var gr=c.createRadialGradient(mx,my+40,0,mx,my+40,22);gr.addColorStop(0,"rgba(255,210,122,"+a+")");gr.addColorStop(1,"rgba(255,160,80,0)");c.fillStyle=gr;c.beginPath();c.arc(mx,my+40,22,0,6.283);c.fill();}
+  }};
+  reg(d);io.observe(cv);
+})();
+
+/* ---------- 4a string modes ---------- */
+(function(){
+  var cv=document.getElementById("strCv"),g,m=1;
+  var labels={1:"模式 1：基本驻波 → “像电子”",2:"模式 2：更高一阶 → “像光子”",3:"模式 3：闭弦的四极振动 → “像引力子”"};
+  document.querySelectorAll(".mode").forEach(function(b){b.onclick=function(){m=+b.dataset.m;document.querySelectorAll(".mode").forEach(function(x){x.classList.toggle("on",x===b);});};});
+  var d={resize:function(){g=setup(cv);},step:function(t){
+    var c=g.c,w=g.w,h=g.h;c.clearRect(0,0,w,h);t/=1000;var cy=h*0.48;
+    c.lineCap="round";
+    function glow(col){c.shadowColor=col;c.shadowBlur=16;c.strokeStyle=col;c.lineWidth=3;}
+    if(m<3){var L=w*0.7,x0=(w-L)/2,n=m===1?1:3,A=h*0.28,om=m===1?3:6;
+      for(var k=4;k>=0;k--){c.globalAlpha=k?0.12:1;var tt=t-k*0.03;glow(m===1?"#7cc4ff":"#ffd27a");c.beginPath();
+        for(var i=0;i<=200;i++){var x=i/200;var y=Math.sin(n*Math.PI*x)*Math.cos(om*tt)*A + (m===2?Math.sin(2*Math.PI*x)*Math.sin(om*0.7*tt)*A*0.25:0);
+          i?c.lineTo(x0+x*L,cy+y):c.moveTo(x0+x*L,cy+y);}c.stroke();}
+      c.globalAlpha=1;c.shadowBlur=0;
+    } else {var R=Math.min(w,h)*0.26;
+      for(var k=4;k>=0;k--){c.globalAlpha=k?0.12:1;var tt=t-k*0.03;glow("#c58bff");c.beginPath();
+        for(var i=0;i<=240;i++){var th=i/240*6.2832;var r=R*(1+0.28*Math.cos(2*th)*Math.cos(3.5*tt));var x=w/2+r*Math.cos(th),y=cy+r*Math.sin(th)*0.9;i?c.lineTo(x,y):c.moveTo(x,y);}c.closePath();c.stroke();}
+      c.globalAlpha=1;c.shadowBlur=0;}
+    c.fillStyle="#e8ecff";c.font="15px "+FONT;c.textAlign="center";c.fillText(T("str"+m),w/2,h-18);
+    c.fillStyle="#9aa3c7";c.font="12px "+FONT;c.fillText(T("cartoon"),w/2,20);c.textAlign="left";
+  }};
+  reg(d);io.observe(cv);
+})();
+
+/* ---------- 4b garden hose ---------- */
+(function(){
+  var cv=document.getElementById("hoseCv"),g,z=0,zs=0,sl=document.getElementById("hoseZoom"),lb=document.getElementById("hoseLbl");
+  sl.oninput=function(){z=sl.value/100;lb.textContent=T(z<.3?"hose0":z<.7?"hose1":"hose2");};window.__hoseLbl=sl.oninput;
+  var d={resize:function(){g=setup(cv);},step:function(t){
+    var c=g.c,w=g.w,h=g.h;c.clearRect(0,0,w,h);zs+=(z-zs)*0.15;var cy=h*0.48;
+    var r=1+zs*zs*Math.min(80,h*0.3);var ex=r*0.35;
+    // body
+    var gr=c.createLinearGradient(0,cy-r,0,cy+r);gr.addColorStop(0,"#2b7a5e");gr.addColorStop(.45,"#5fe0a8");gr.addColorStop(1,"#14402f");
+    c.fillStyle=gr;c.fillRect(0,cy-r,w,2*r);
+    if(zs>0.15){ // cross-section circles
+      var step=Math.max(40,120*(1-zs)+50);c.strokeStyle="rgba(255,255,255,"+Math.min(.7,zs)+")";c.lineWidth=1.2;
+      for(var x=step/2;x<w;x+=step){c.beginPath();c.ellipse(x,cy,ex,r,0,0,6.283);c.stroke();}
+      if(zs>0.6){var x=Math.floor(w/2/step)*step+step/2,a=t/600;var px=x+ex*Math.cos(a),py=cy+r*Math.sin(a);
+        c.fillStyle="#ffd27a";c.beginPath();c.arc(px,py,4.5,0,6.283);c.fill();c.fillStyle="#ffd27a";c.font="12px "+FONT;c.fillText(T("ant"),x+ex+10,cy-r-8);}
+    }
+    // walker along line (1D)
+    var wx=(t/12)%w;c.fillStyle="#fff";c.beginPath();c.arc(wx,cy-r-6,3,0,6.283);c.fill();
+    c.fillStyle="#9aa3c7";c.font="12px "+FONT;c.fillText(T("zoomx")+Math.round(zs*30),10,18);
+  }};
+  reg(d);io.observe(cv);
+})();
+
+/* ---------- 5 energy axis ---------- */
+(function(){
+  var ticks=document.getElementById("ticks"),mk=document.getElementById("mk"),NS="http://www.w3.org/2000/svg";
+  function X(e){return 40+e/20*720;}
+  for(var e=0;e<=20;e+=2){var t=document.createElementNS(NS,"text");t.setAttribute("x",X(e)-10);t.setAttribute("y",130);t.textContent="10"+String(e).split("").map(function(d){return "⁰¹²³⁴⁵⁶⁷⁸⁹"[d];}).join("");ticks.appendChild(t);}
+  [[0,"mk_p","#5fe0a8",160],[2.1,"mk_h","#7cc4ff",180],[4.13,"mk_l","#7cc4ff",86],[19.09,"mk_pl","#c58bff",86]].forEach(function(m){
+    var x=X(m[0]);var l=document.createElementNS(NS,"line");l.setAttribute("x1",x);l.setAttribute("x2",x);l.setAttribute("y1",m[3]>100?112:m[3]+6);l.setAttribute("y2",m[3]>100?m[3]-14:98);l.setAttribute("stroke",m[2]);mk.appendChild(l);
+    var c=document.createElementNS(NS,"circle");c.setAttribute("cx",x);c.setAttribute("cy",105);c.setAttribute("r",6);c.setAttribute("fill",m[2]);mk.appendChild(c);
+    var t=document.createElementNS(NS,"text");t.setAttribute("x",m[3]<100?(m[0]>18?x+4:x-4):x);t.setAttribute("y",m[3]);t.setAttribute("fill",m[2]);t.setAttribute("font-size","13");t.setAttribute("text-anchor",m[0]>18?"end":"start");t.setAttribute("data-k",m[1]);t.textContent=T(m[1]);mk.appendChild(t);});
+})();
+
+/* ---------- main loop ---------- */
+function loop(t){drawStars(t);demos.forEach(function(d){d.step(t);});requestAnimationFrame(loop);}
+requestAnimationFrame(loop);
+window.__demos=demos;
+
+/* ---------- navigation ---------- */
+var main=document.getElementById("main"),secs=[].slice.call(document.querySelectorAll("section.slide")),dots=document.getElementById("dots"),cur=0;
+secs.forEach(function(s,i){var a=document.createElement("a");a.href="#"+s.id;a.innerHTML="<span>"+s.dataset.title+"</span>";a.onclick=function(e){e.preventDefault();go(i);};dots.appendChild(a);});
+function go(i){i=Math.max(0,Math.min(secs.length-1,i));main.scrollTo({top:secs[i].offsetTop,behavior:"smooth"});}
+function curIdx(){var y=main.scrollTop+innerHeight*0.35,k=0;secs.forEach(function(s,i){if(s.offsetTop<=y)k=i;});return k;}
+function onScroll(){var max=main.scrollHeight-main.clientHeight;document.getElementById("progress").style.width=(max>0?main.scrollTop/max*100:0)+"%";
+  cur=curIdx();[].forEach.call(dots.children,function(a,i){a.classList.toggle("act",i===cur);});document.getElementById("curTitle").innerHTML="<b>"+(LANG==="en"?secs[cur].dataset.titleEn:secs[cur].dataset.title)+"</b> · "+(cur+1)+"/"+secs.length;}
+main.addEventListener("scroll",onScroll);onScroll();
+document.getElementById("prevBtn").onclick=function(){go(curIdx()-1);};
+document.getElementById("nextBtn").onclick=function(){go(curIdx()+1);};
+document.addEventListener("keydown",function(e){
+  if(e.target.tagName==="INPUT")return;
+  var k=e.key,s=secs[curIdx()],bottom=s.offsetTop+s.offsetHeight,viewBottom=main.scrollTop+main.clientHeight;
+  if(k==="ArrowRight"||k==="PageDown"){e.preventDefault();go(curIdx()+1);}
+  else if(k==="ArrowLeft"||k==="PageUp"){e.preventDefault();go(curIdx()-1);}
+  else if(k==="ArrowDown"||k===" "){if(viewBottom>=bottom-4){e.preventDefault();go(curIdx()+1);}else if(k==="ArrowDown"){e.preventDefault();main.scrollBy({top:main.clientHeight*0.6,behavior:"smooth"});}}
+  else if(k==="ArrowUp"){if(main.scrollTop<=s.offsetTop+4){e.preventDefault();go(curIdx()-1);}else{e.preventDefault();main.scrollBy({top:-main.clientHeight*0.6,behavior:"smooth"});}}
+  else if(k==="Home"){e.preventDefault();go(0);} else if(k==="End"){e.preventDefault();go(secs.length-1);}
+});
+window.__go=go;window.__cur=curIdx;
+
+/* ---------- sound: ambient pad + page chime + double-slit ticks (all Web Audio, no files) ---------- */
+var soundOn=false,actx=null,lastTick=0,soundBtn=document.getElementById("soundBtn"),pad=null,tickBus=null,lastChime=0,lastSec=-1;
+try{soundOn=localStorage.getItem("qc_sound")==="on";}catch(e){}
+window.__tickCount=0;window.__chimeCount=0;
+function ensureCtx(){
+  if(!actx){var AC=window.AudioContext||window.webkitAudioContext;if(!AC)return null;actx=new AC();
+    tickBus=actx.createGain();tickBus.gain.value=1;tickBus.connect(actx.destination);}
+  if(actx.state==="suspended")actx.resume();
+  return actx;
+}
+function startPad(){
+  if(!ensureCtx()||pad)return;
+  var t=actx.currentTime,master=actx.createGain(),lp=actx.createBiquadFilter(),lfo=actx.createOscillator(),lfoAmt=actx.createGain(),
+      trem=actx.createOscillator(),tremAmt=actx.createGain(),voice=actx.createGain();
+  master.gain.setValueAtTime(0.0001,t);master.gain.exponentialRampToValueAtTime(0.06,t+1.5);
+  lp.type="lowpass";lp.frequency.value=520;lp.Q.value=0.7;
+  lfo.frequency.value=0.06;lfoAmt.gain.value=220;lfo.connect(lfoAmt);lfoAmt.connect(lp.frequency);
+  voice.gain.value=0.33;trem.frequency.value=0.11;tremAmt.gain.value=0.08;trem.connect(tremAmt);tremAmt.connect(voice.gain);
+  var oscs=[["sine",55,0],["triangle",82.41,7],["sine",110,-6]].map(function(o){var x=actx.createOscillator();x.type=o[0];x.frequency.value=o[1];x.detune.value=o[2];x.connect(voice);x.start(t);return x;});
+  voice.connect(lp);lp.connect(master);master.connect(actx.destination);lfo.start(t);trem.start(t);
+  pad={master:master,nodes:oscs.concat([lfo,trem]),filter:lp};
+  window.__audio={state:actx.state,padOscillators:oscs.length,filter:lp.type,masterTarget:0.06};
+}
+function stopPad(){
+  if(!pad||!actx)return;var p=pad;pad=null;var t=actx.currentTime;
+  p.master.gain.cancelScheduledValues(t);p.master.gain.setValueAtTime(Math.max(p.master.gain.value,0.0001),t);p.master.gain.exponentialRampToValueAtTime(0.0001,t+1.5);
+  p.nodes.forEach(function(n){try{n.stop(t+1.6);}catch(e){}});setTimeout(function(){try{p.master.disconnect();}catch(e){}},1800);
+  if(window.__audio)window.__audio.padOscillators=0;
+}
+function chime(){
+  if(!soundOn||!actx||actx.state!=="running")return;var now=performance.now();if(now-lastChime<600)return;lastChime=now;
+  var t=actx.currentTime;[[660,0.010],[990,0.006]].forEach(function(f){var o=actx.createOscillator(),g=actx.createGain();o.type="sine";o.frequency.value=f[0];
+    g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(f[1],t+0.02);g.gain.exponentialRampToValueAtTime(0.0001,t+1.2);
+    o.connect(g);g.connect(tickBus);o.start(t);o.stop(t+1.25);});window.__chimeCount++;
+}
+function maybeTick(){
+  if(!soundOn||!actx||actx.state!=="running")return;
+  if(!secs||secs[curIdx()].id!=="s1"||!visible.has(document.getElementById("slitCv")))return;
+  var now=performance.now(); if(now-lastTick<110||Math.random()<0.35)return; lastTick=now;
+  var t=actx.currentTime,o=actx.createOscillator(),g=actx.createGain();
+  o.type="sine";o.frequency.value=1700+Math.random()*900;
+  g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(0.012,t+0.004);g.gain.exponentialRampToValueAtTime(0.0001,t+0.03);
+  o.connect(g);g.connect(tickBus);o.start(t);o.stop(t+0.035);window.__tickCount++;
+}
+function setSound(on){
+  soundOn=on;try{localStorage.setItem("qc_sound",on?"on":"off");}catch(e){}
+  soundBtn.setAttribute("aria-pressed",String(on));soundBtn.textContent=T(on?"sOn":"sOff");
+  if(on){try{startPad();}catch(e){}}else stopPad();
+}
+soundBtn.onclick=function(){setSound(!soundOn);};
+main.addEventListener("scroll",function(){var k=curIdx();if(k!==lastSec){if(lastSec!==-1)chime();lastSec=k;}});
+lastSec=curIdx();
+if(soundOn){ // remembered preference: browsers need a gesture before audio can start
+  soundBtn.setAttribute("aria-pressed","true");
+  var arm=function(e){if(e&&e.target===soundBtn)return;document.removeEventListener("pointerdown",arm,true);document.removeEventListener("keydown",arm,true);if(soundOn)startPad();};
+  document.addEventListener("pointerdown",arm,true);document.addEventListener("keydown",arm,true);
+}
+
+/* ---------- language switch ---------- */
+var ZH={};
+document.querySelectorAll("[data-i18n]").forEach(function(el){ZH[el.dataset.i18n]=el.innerHTML;});
+function applyLang(){
+  document.documentElement.lang=LANG==="en"?"en":"zh-CN";
+  document.querySelectorAll("[data-i18n]").forEach(function(el){var k=el.dataset.i18n;el.innerHTML=(LANG==="en"&&D.en[k]!=null)?D.en[k]:ZH[k];});
+  document.querySelectorAll("#mk text[data-k]").forEach(function(t){t.textContent=T(t.getAttribute("data-k"));});
+  [].forEach.call(dots.children,function(a,i){a.querySelector("span").textContent=LANG==="en"?secs[i].dataset.titleEn:secs[i].dataset.title;});
+  document.getElementById("langBtn").textContent=T("langBtn");
+  FONT=getComputedStyle(document.body).fontFamily;
+  var AV={ein:"E",kong:"C",wang:"W",lu:"R",su:"S"};
+  document.querySelectorAll(".say .ava").forEach(function(el){if(el.dataset.zh==null)el.dataset.zh=el.textContent;var c=Object.keys(AV).filter(function(k){return el.classList.contains(k);})[0];el.textContent=LANG==="en"&&c?AV[c]:el.dataset.zh;});
+  if(!window.__zhTitle)window.__zhTitle=document.title;document.title=LANG==="en"?"Quantum Mechanics & String Theory · A five-person debate":window.__zhTitle;
+  soundBtn.textContent=T(soundOn?"sOn":"sOff");
+  if(window.__obsLabel)window.__obsLabel(); if(window.__foamLbl)window.__foamLbl(); if(window.__hoseLbl)window.__hoseLbl();
+  renderLinks(); onScroll();
+}
+document.getElementById("langBtn").onclick=function(){LANG=LANG==="en"?"zh":"en";try{localStorage.setItem("qc_lang",LANG);}catch(e){}applyLang();};
+applyLang();
+window.__setLang=function(l){LANG=l;applyLang();};
+})();
+</script>
+</body>
+</html>
